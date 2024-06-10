@@ -2,6 +2,10 @@ variable "jumppad_version" {
   type = string
 }
 
+variable "image_prefix" {
+  type = string
+}
+
 variable "jumppad_images" {
   type    = list(string)
   default = []
@@ -22,7 +26,7 @@ variable "zone" {
 }
 
 variable "workshop_repo" {
-  type    = string
+  type = string
 }
 
 packer {
@@ -40,7 +44,7 @@ source "googlecompute" "jumppad" {
   zone       = var.zone
 
   image_family = "jumppad"
-  image_name   = regex_replace("spring-workshop-${var.jumppad_version}", "[^a-zA-Z0-9_-]", "-")
+  image_name   = regex_replace("${var.image_prefix}-${var.jumppad_version}", "[^a-zA-Z0-9_-]", "-")
 
   source_image_family = "ubuntu-2204-lts"
   machine_type        = "n1-standard-4"

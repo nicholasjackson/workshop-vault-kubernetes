@@ -11,4 +11,6 @@ jumppad_version = "0.11.2"
 
 project_id = "jumppad"
 
-workshop_repo = https://github.com/nicholasjackson/workshop-vault-kubernetes.git
+image_prefix = "workshop-k8s"
+
+workshop_repo = "https://github.com/nicholasjackson/workshop-vault-kubernetes.git"

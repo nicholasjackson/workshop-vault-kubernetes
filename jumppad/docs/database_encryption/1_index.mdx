@@ -1,0 +1,32 @@
+# Database encryption
+
+In the last section you learned how to confgiure database credentials using Vault
+for your Spring applications. In this section you will learn how to us Vault's 
+Transit Secrets Engine to encrypt and decrypt data in your database.
+
+## Enabling the Transit Secrets Engine
+
+All engines and authentication methods must be enabled at a particular path before they can be used. 
+This is usually a one-time operation. Let's enable the transit secrets engine
+
+The name of the transit engine is called `transit` like the name of the database
+engine was called `database`. Why not have a go at enabling the transit engine.  
+
+### Enable the transit secrets engine
+
+Did you manage that? If not you can find the solution below.
+
+<p>
+<details>
+  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: command</summary>
+
+
+```shell
+vault secrets enable transit
+```
+
+</details>
+</p>
+
+Next let's see how you can create the encryption keys that are used for encypting and decrypting
+data.

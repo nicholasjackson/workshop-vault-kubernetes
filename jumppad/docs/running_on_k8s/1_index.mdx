@@ -1,0 +1,31 @@
+# Configuring Kubernetes authentication
+
+In previous exercises you have been interacting with Vault using an admin token.
+When running on a Kubernetes cluster you need to ensuret that the application
+has been configured with the correct permissions to interact with Vault.
+
+To secure access to it's API Vault uses a system of policies and roles. Policies
+define what paths a token can access and what operations can be performed on those
+paths. Roles define what policies are associated with an authentication endpoint.
+
+Previously you authenticated with an existing token, this capability is not
+practical in a production environment as it would require long lived tokens
+to be deployed with each deployment.  To address this Vault provides the concept
+of authentication endpoints.  These are endpoints that can be used to authenticate
+to Vault using a known secret such as a Kubernetes service account token, a GitHub
+token or a username and password.
+
+The authentication method for Kubernetes has already been configured for your
+cluster.  For your information the command looks like this:
+
+```bash
+vault write auth/kubernetes/config \
+  token_reviewer_jwt=<service account token> \
+  kubernetes_host="https://kubernetes.default.svc:443" \
+  kubernetes_ca_cert=<kubernetes ca cert>
+```
+
+Besides checking that the service account token has been correctly signed, 
+Vault uses the Kubernetes API to validate that the presented service account token 
+is valid.  For this reason the `kubernetes_host` and `kubernetes_ca_cert` are required
+when configuring the Kubernetes authentication method.

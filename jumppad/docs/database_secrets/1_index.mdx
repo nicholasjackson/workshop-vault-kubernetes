@@ -1,0 +1,15 @@
+# Database secrets engine
+
+Every engine in Vault has to be enabled and configured, and the database engine is no different. The database engine is used to generate dynamic credentials for databases, and it can be configured to generate credentials for a variety of databases. This guide will walk you through configuring the database engine and generating dynamic credentials for a PostgreSQL database.
+
+## Enable the Database Engine
+
+All secrets engines must be enabled at a particular path before they can be used. This is usually a one-time operation. You enable the database engine with the `vault secrets enable <type>` command.
+
+### Run the following command in your terminal
+
+```shell
+vault secrets enable database
+```
+
+Now that the datatabase engine is enabled let's configure it

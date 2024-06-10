@@ -7,6 +7,8 @@ jumppad_images = [
   "nicholasjackson/spring-vault-vscode:v0.0.2",
 ]
 
-jumppad_version = "0.11.1"
+jumppad_version = "0.11.2"
 
 project_id = "jumppad"
+
+workshop_repo = https://github.com/nicholasjackson/workshop-vault-kubernetes.git

@@ -21,6 +21,10 @@ variable "zone" {
   default = "europe-west1-d"
 }
 
+variable "workshop_repo" {
+  type    = string
+}
+
 packer {
   required_plugins {
     googlecompute = {
@@ -57,7 +61,8 @@ build {
     script = "files/install.sh"
     environment_vars = [
       "JUMPPAD_VERSION=${trimprefix(var.jumppad_version, "v")}",
-      "JUMPPAD_IMAGES=${join(" ", var.jumppad_images)}"
+      "JUMPPAD_IMAGES=${join(" ", var.jumppad_images)}",
+      "WORKSHOP_REPO=${var.workshop_repo}"
     ]
   }
 }

@@ -48,7 +48,7 @@ mkdir /root/workshop
 
 # Clone the workshop
 pushd /root
-git clone https://github.com/nicholasjackson/workshop-spring-vault.git ./workshop
+git clone $WORKSHOP_REPO  ./workshop
 
 # Run jumppad to cache the images
 pushd /root/workshop

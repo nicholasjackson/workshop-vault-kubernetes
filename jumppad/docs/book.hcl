@@ -22,6 +22,7 @@ resource "book" "spring_vault" {
   title = "Using Spring Vault"
 
   chapters = [
+    resource.chapter.vault_k8s_overview,
     resource.chapter.database_secrets,
     resource.chapter.database_encryption,
     resource.chapter.running_on_k8s,

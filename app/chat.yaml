@@ -1,3 +1,11 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: chat
+automountServiceAccountToken: false
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -12,6 +20,8 @@ spec:
       labels:
         app: chat-app
     spec:
+      serviceAccountName: chat
+      automountServiceAccountToken: true
       containers:
       - name: chat-app
         image: guybarros/chat-app:latest
@@ -23,9 +33,10 @@ spec:
         - name: MONGODB_PORT
           value: "27017"
         - name: MONGODB_USERNAME
-          value: "payments"
+          value: "chat"
         - name: MONGODB_PASSWORD
           value: "password"
+
 ---
 apiVersion: v1
 kind: Service

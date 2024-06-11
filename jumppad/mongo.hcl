@@ -15,8 +15,13 @@ resource "container" "mongo" {
   }
 
   environment = {
-    MONGO_INITDB_ROOT_USERNAME ="chat"
+    MONGO_INITDB_ROOT_USERNAME ="root"
     MONGO_INITDB_ROOT_PASSWORD ="password"
-    MONGO_INITDB_DATABASE      ="chat"
+    MONGO_INITDB_DATABASE      ="root-db"
+  }
+
+  volume {
+    source = "./config/mongo-init.js"
+    destination = "/docker-entrypoint-initdb.d/mongo-init.js"
   }
 }

@@ -14,8 +14,14 @@ RUN apt-get update && \
     git \
     jq \
     build-essential \
-    postgresql-client
+    postgresql-client \
+    gnupg
 
+# Install Mongo client
+RUN wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add - \
+  echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list && \
+  apt-get update && \
+  install -y mongocli
 
 # Install Helm
 RUN curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null && \

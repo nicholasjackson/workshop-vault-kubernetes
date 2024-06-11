@@ -10,11 +10,11 @@ resource "helm" "vault_operator" {
   cluster = variable.k8s
 
   repository {
-    name = "hashicorp"
+    name = "hashicorp2"
     url  = "https://helm.releases.hashicorp.com"
   }
 
-  chart   = "hashicorp/vault-secrets-operator"
+  chart   = "hashicorp2/vault-secrets-operator"
   version = "v0.7.1"
 
   namespace = variable.vault_namespace

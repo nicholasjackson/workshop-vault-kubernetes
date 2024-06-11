@@ -15,8 +15,8 @@ resource "container" "mongo" {
   }
 
   environment = {
-    MONGO_INITDB_ROOT_USERNAME ="payments"
+    MONGO_INITDB_ROOT_USERNAME ="chat"
     MONGO_INITDB_ROOT_PASSWORD ="password"
-    MONGO_INITDB_DATABASE      ="payments"
+    MONGO_INITDB_DATABASE      ="chat"
   }
 }

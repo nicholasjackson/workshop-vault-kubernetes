@@ -1,0 +1,52 @@
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: chat-auth
+spec:
+  method: kubernetes
+  mount: kubernetes 
+  kubernetes:
+    role: chat
+    serviceAccount: chat
+
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: vault-static-secret
+spec:
+  vaultAuthRef: chat-auth
+  mount: kv
+  type: kv-v2
+  path: chat/config 
+  refreshAfter: 60s
+  destination:
+    create: true
+    name: chat-config
+
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultPKISecret
+metadata:
+  name: vault-pki-secret
+spec:
+  vaultAuthRef: chat-auth
+  mount: pki
+  role: chat
+  commonName: chat.local.jmpd.in
+  destination:
+    create: true
+    name: chat-pki
+
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultDynamicSecret
+metadata:
+  name: vault-database-secret
+spec:
+  vaultAuthRef: chat-auth
+  mount: database
+  path: creds/writer
+  destination:
+    create: true
+    name: chat-database

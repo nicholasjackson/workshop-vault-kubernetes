@@ -19,3 +19,6 @@ server:
   image:
     repository: "hashicorp/vault"
     tag: "1.16.2"
+
+csi:
+  enabled: "true"

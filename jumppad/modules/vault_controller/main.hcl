@@ -42,6 +42,22 @@ resource "helm" "vault" {
   values = "./config/vault-values.yaml"
 }
 
+resource "helm" "csi_driver" {
+  depends_on = ["resource.k8s_config.vault_auth"]
+  cluster    = variable.k8s
+
+  repository {
+    name = "secrets-store-csi-driver"
+    url  = "https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts"
+  }
+
+  chart   = "secrets-store-csi-driver/secrets-store-csi-driver"
+
+  namespace = "kube-system"
+
+  values = "./config/csi-values.yaml"
+}
+
 # Initialize the Vault server and configure
 resource "exec" "vault_init" {
   depends_on = ["resource.helm.vault"]

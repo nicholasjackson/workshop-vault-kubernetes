@@ -1,0 +1,46 @@
+---
+apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
+kind: SecretProviderClass
+metadata:
+  name: vault-db-creds
+spec:
+  provider: vault
+  secretObjects:
+    - secretName: vault-db-creds-secret
+      type: Opaque
+      data:
+        - objectName: dbUsername # References dbUsername below
+          key: username # Key within k8s secret for this value
+        - objectName: dbPassword
+          key: password
+  parameters:
+    roleName: 'chat'
+    vaultAddress: 'http://vault.vault.svc:8200'
+    objects: |
+      - objectName: "dbUsername"
+        secretPath: "database/creds/writer"
+        secretKey: "username"
+      - objectName: "dbPassword"
+        secretPath: "database/creds/writer"
+        secretKey: "password"
+
+---
+apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
+kind: SecretProviderClass
+metadata:
+  name: vault-pki-creds
+spec:
+  provider: vault
+  parameters:
+    roleName: 'chat'
+    objects: |
+      - objectName: "cert"
+        secretPath: "pki/issue/chat"
+        secretKey: "certificate"
+        secretArgs:
+          common_name=chat.local.jmpd.in
+      - objectName: "key"
+        secretPath: "pki/issue/chat"
+        secretKey: "private_key"
+        secretArgs:
+          common_name=chat.local.jmpd.in

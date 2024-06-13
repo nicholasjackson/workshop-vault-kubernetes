@@ -1,0 +1,64 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-csi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-csi
+  template:
+    metadata:
+      labels:
+        app: chat-csi
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "chat"
+    spec:
+      serviceAccountName: chat
+      automountServiceAccountToken: true
+      containers:
+      - name: chat-csi
+        image: guybarros/chat-app:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGODB_SERVER
+          value: "10.100.0.180"
+        - name: MONGODB_PORT
+          value: "27017"
+        - name: MONGODB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: vault-db-creds-secret
+              key: username
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: vault-db-creds-secret
+              key: password
+        volumeMounts:
+          - name: 'vault-db-creds'
+            mountPath: '/mnt/secrets-store'
+            readOnly: true
+      volumes:
+        - name: vault-db-creds
+          csi:
+            driver: 'secrets-store.csi.k8s.io'
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: 'vault-db-creds'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-controller
+spec:
+  selector:
+    app: chat-controller
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: LoadBalancer

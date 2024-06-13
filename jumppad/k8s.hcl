@@ -1,7 +1,15 @@
+resource "container_registry" "k8s" {
+  hostname = "registry.k8s.io"
+}
+
 resource "k8s_cluster" "k3s" {
 
   network {
     id = resource.network.local.meta.id
+  }
+
+  image {
+    name = "shipyardrun/k3s:v1.27.5"
   }
 }
 

@@ -34,6 +34,8 @@ resource "helm" "vault" {
     url  = "https://helm.releases.hashicorp.com"
   }
 
+  retry = 2
+
   chart   = "hashicorp/vault" # When repository specified this is the name of the chart
   version = "v0.27.0"         # Version of the chart when repository specified
 

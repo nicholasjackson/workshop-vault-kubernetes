@@ -6,6 +6,10 @@ variable "image_prefix" {
   type = string
 }
 
+variable "image_suffix" {
+  type = string
+}
+
 variable "jumppad_images" {
   type    = list(string)
   default = []
@@ -44,7 +48,7 @@ source "googlecompute" "jumppad" {
   zone       = var.zone
 
   image_family = "jumppad"
-  image_name   = regex_replace("${var.image_prefix}-${var.jumppad_version}", "[^a-zA-Z0-9_-]", "-")
+  image_name   = regex_replace("${var.image_prefix}-${var.jumppad_version}-${var.image_suffix}", "[^a-zA-Z0-9_-]", "-")
 
   source_image_family = "ubuntu-2204-lts"
   machine_type        = "n1-standard-4"

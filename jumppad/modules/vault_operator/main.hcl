@@ -17,6 +17,8 @@ resource "helm" "vault_operator" {
   chart   = "hashicorp2/vault-secrets-operator"
   version = "v0.7.1"
 
+  retry = 2
+
   namespace = variable.vault_namespace
 
   values_string = {

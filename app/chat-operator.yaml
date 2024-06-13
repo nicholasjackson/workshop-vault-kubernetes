@@ -1,24 +1,17 @@
 ---
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: chat
-automountServiceAccountToken: false
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: chat-app
+  name: chat-operator
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: chat-app
+      app: chat-operator
   template:
     metadata:
       labels:
-        app: chat-app
+        app: chat-operator
     spec:
       serviceAccountName: chat
       automountServiceAccountToken: true
@@ -33,18 +26,37 @@ spec:
         - name: MONGODB_PORT
           value: "27017"
         - name: MONGODB_USERNAME
-          value: "chat"
+          valueFrom:
+            secretKeyRef:
+              name: chat-database
+              key: username
         - name: MONGODB_PASSWORD
-          value: "password"
+          valueFrom:
+            secretKeyRef:
+              name: chat-database
+              key: password
+        volumeMounts:
+        - name: chat-pki
+          mountPath: /etc/ssl/certs
+          readOnly: true
+      volumes:
+        - name: chat-pki
+          secret:
+            secretName: chat-pki
+            items:
+            - key: certificate
+              path: cert.pem
+            - key: private_key
+              path: key.pem
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: chat-app
+  name: chat-operator
 spec:
   selector:
-    app: chat-app
+    app: chat-operator
   ports:
     - protocol: TCP
       port: 5000

@@ -1,0 +1,5 @@
+set -e
+
+# Adding || true means that should the command fail, the skip script will still pass
+# Vault will return an error if the database secrets engine is already enabled
+vault secrets enable database || true

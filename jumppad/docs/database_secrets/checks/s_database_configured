@@ -1,0 +1,8 @@
+set -e
+
+vault write database/config/chat \
+  plugin_name=mongodb-database-plugin \
+  allowed_roles=writer,reader \
+  connection_url="mongodb://\{{username}}:\{{password}}@{{db_address}}:27017/admin?tls=false" \
+  username="root" \
+  password="password"

@@ -3,6 +3,7 @@ resource "chapter" "database_secrets" {
 
   tasks = {
     enable_database = resource.task.enable_database
+    configure_database = resource.task.configure_database
   }
 
   page "introduction" {
@@ -59,8 +60,45 @@ resource "task" "enable_database" {
     }
 
     solve {
-      script  = file("database_secrets/checks/r_database_enabled")
+      script  = file("database_secrets/checks/s_database_enabled")
       timeout = 60
     }
+  }
+}
+
+resource "task" "configure_database" {
+  prerequisites = [resource.task.enable_database.meta.id]
+
+  config {
+    user   = "root"
+    target = variable.vscode
+  }
+  
+  condition "database_configured" {
+    description = "Vault database engine has been configured"
+
+    check {
+      script          = file("database_secrets/checks/c_database_configured")
+      failure_message = "Run the previous command to enable the database engine"
+    }
+
+    solve {
+      script = template_file("./database_secrets/checks/s_database_configured", { db_address = variable.db_address })
+      timeout = 60
+    }
+  }
+
+  condition "root_rotated" {
+    description = "The root credentials have been rotated" 
+
+    check {
+      script          = file("database_secrets/checks/c_database_rotated")
+      failure_message = "Run the previous command to enable the database engine"
+    }
+
+    //solve {
+    //  script  = file("database_secrets/checks/s_database_rotated")
+    //  timeout = 60
+    //}
   }
 }

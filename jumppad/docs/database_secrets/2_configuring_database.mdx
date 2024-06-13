@@ -1,46 +1,65 @@
 # Configuring the database connection
 
-Once an engine has been enabled at a given path, you can configure it. The configuration options will vary depending on the type of secrets engine. The database secrets engine requires connection information to the database.
+Once an engine has been enabled at a given path, you can configure it. The 
+configuration options will vary depending on the type of secrets engine. 
+The database secrets engine requires connection information to the database.
 
-There are many different databases that are supported by Vault [database secrets engine](https://www.vaultproject.io/docs/secrets/databases/index.html). When configuring the database secrets engine, you need to specify the plugin name, the connection URL, and the allowed roles.
+There are many different databases that are supported by Vault 
+[database secrets engine](https://www.vaultproject.io/docs/secrets/databases/index.html). 
+When configuring the database secrets engine, you need to specify the plugin name, the connection URL, 
+and the allowed roles.
 
-We will configure the database secrets engine for a PostgreSQL database. The connection URL should be in the format:
+We will configure the database secrets engine for a MongoDB database. The connection 
+URL should be in the format:
  
 ```
 postgresql://\{{username}}:\{{password}}@hostname:port/database_name?sslmode=disable
 ```
 
-`username` and `password` are template variables, the actual username and password are passed as parameters.
+`\{{username}}` and `\{{password}}` are template variables, the actual username 
+and password are passed as parameters.
 
-
-### Run the following command in the terminal to configure the database connection:
+The full command looks like the folowing example:
 
 ```shell
-vault write database/config/payments \
-    plugin_name=postgresql-database-plugin \
-    allowed_roles=writer,reader \
-    connection_url="postgresql://\{{username}}:\{{password}}@{{db_address}}:5432/payments?sslmode=disable" \
-    username="postgres" \
-    password="password"
+vault write database/config/chat \
+  plugin_name=mongodb-database-plugin \
+  allowed_roles=writer,reader \
+  connection_url="mongodb://\{{username}}:\{{password}}@{{db_address}}:27017/admin?tls=false" \
+  username="root" \
+  password="password"
 ```
+
+If you notice in the previous command you are passing the username and password as parameters.
+This is potentially a security risk, as the not only is the password hard coded in the command,
+but even if you used variable substitution the password would still need to be available in 
+the environment where the command runs. Wherever you have a secret there is an oppotunity 
+for it to be leaked.
+
+Vault has a solution for this, it has the ability to rotate these credentials, storing
+them securtely in Vault. Let's see how this works.
 
 ## Rotating the Root Database Credentials
 
-Once you have configured the username and password in Vault it is not possible to read this configuration and retrieve them, 
-they are only used internally when generating dynamic credentials. 
-However, to configure Vault we had to provide the root database credentials. Regardless of how you obtained these credentisls, 
-it is a good practice to rotate them to ensure that they do not leak. Vault can automatically rotate the credentials for you 
-without you needing to configure the secrets engine again.
+Once you have configured the username and password in Vault it is not possible to read this 
+configuration and retrieve them, they are only used internally when generating dynamic credentials. 
+However we would like to avoid the situation where the credentials are leaked at configuration
+time. To acheive this you can use the `rotate-root` command to rotate the root credentials.
 
-### Run the following command in the terminal to rotate the root credentials:
+Vault will generate a new username and password, and update the configuration with the new
+credentials. The old credentials are revoked and can no longer be used. Since the root credentials
+are only used to generate dynamic credentials, this is a very simple solution to the problem.
+
+The command to rotate the root credentials is:
 
 ```shell
-vault write -force database/rotate-root/payments
+vault write -force database/rotate-root/chat
 ```
+
+<Task id="configure_database">
+Using the information above, configure the database secrets engine for MongoDB 
+and rotate the root database credentials.
+</Task>
 
 Now the Vault has been configured with the database details, let's see how you can create roles
 that grant specific permissions.
-
-<Task id="enable_database">
-  Use the Terraform CLI to view the Terraform state in a machine-readable format.
-</Task>

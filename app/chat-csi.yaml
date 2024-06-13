@@ -49,6 +49,7 @@ spec:
             readOnly: true
             volumeAttributes:
               secretProviderClass: 'vault-db-creds'
+
 ---
 apiVersion: v1
 kind: Service

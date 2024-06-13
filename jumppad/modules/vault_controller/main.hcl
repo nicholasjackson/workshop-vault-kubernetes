@@ -45,7 +45,7 @@ resource "helm" "vault" {
 }
 
 resource "helm" "csi_driver" {
-  depends_on = ["resource.k8s_config.vault_auth"]
+  depends_on = ["resource.helm.vault"]
   cluster    = variable.k8s
 
   repository {
@@ -53,7 +53,7 @@ resource "helm" "csi_driver" {
     url  = "https://kubernetes-sigs.github.io/secrets-store-csi-driver/charts"
   }
 
-  chart   = "secrets-store-csi-driver/secrets-store-csi-driver"
+  chart = "secrets-store-csi-driver/secrets-store-csi-driver"
 
   namespace = "kube-system"
 

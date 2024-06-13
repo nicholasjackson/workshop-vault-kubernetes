@@ -23,6 +23,8 @@ module "vault_controller" {
 }
 
 module "vault_operator" {
+  depends_on = ["module.vault_controller"]
+
   source = "./modules/vault_operator"
 
   variables = {

@@ -57,6 +57,9 @@ resource "helm" "csi_driver" {
 
   namespace = "kube-system"
 
+  timeout = 120
+  retry = 2
+
   values = "./config/csi-values.yaml"
 }
 

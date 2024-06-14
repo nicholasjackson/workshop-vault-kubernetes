@@ -2,6 +2,14 @@ resource "container_registry" "k8s" {
   hostname = "registry.k8s.io"
 }
 
+resource "container_registry" "amazonaws" {
+  hostname = "amazonaws.com"
+}
+
+resource "container_registry" "pkg" {
+  hostname = "pkg.dev"
+}
+
 resource "k8s_cluster" "k3s" {
 
   network {
@@ -10,6 +18,12 @@ resource "k8s_cluster" "k3s" {
 
   image {
     name = "shipyardrun/k3s:v1.27.5"
+  }
+
+  config {
+    docker {
+      no_proxy = ["registry.k8s.io", "pkg.dev"]
+    }
   }
 }
 

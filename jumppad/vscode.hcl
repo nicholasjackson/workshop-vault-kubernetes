@@ -34,11 +34,6 @@ resource "template" "vscode_jumppad" {
       "active": true
     },
     {
-      "name": "SpringBoot",
-      "location": "editor",
-      "type": "terminal"
-    },
-    {
       "name": "Terminal",
       "location": "editor",
       "type": "terminal"

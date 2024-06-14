@@ -1,1 +1,40 @@
-# Vault Kubernetes Integration Overview
+# Integrating HashiCorp Vault with Kubernetes: Enhancing Security Beyond Native Secrets
+
+In the modern era of cloud-native applications and container orchestration, Kubernetes has emerged as the leading platform for managing containerized workloads. One of the crucial aspects of managing applications in Kubernetes is handling sensitive data, such as API keys, certificates, credentials, and other secrets. Kubernetes provides its own mechanism for managing secrets, but many organizations are opting to integrate with HashiCorp Vault. This workshop explores why integrating HashiCorp Vault with Kubernetes can be beneficial, how to ensure a secure integration, design considerations, available options from HashiCorp, and the recommended practices.
+
+## Why Are We Integrating with HashiCorp Vault Anyway? Kubernetes Has Secrets!
+
+Kubernetes Secrets is a built-in object for storing sensitive information. While it offers basic functionality, there are several reasons why organizations might seek a more robust solution like HashiCorp Vault:
+
+1. **Enhanced Security Features**: Vault offers advanced security features such as dynamic secrets, leasing, revocation, and sophisticated access control policies. These features help minimize the risk of long-lived credentials and unauthorized access.
+
+2. **Centralized Secret Management**: Vault serves as a centralized secrets management solution, enabling consistent security practices across different environments (e.g., on-premises, multi-cloud, hybrid cloud). This centralization simplifies auditing and compliance.
+
+3. **Dynamic Secrets**: Unlike static secrets stored in Kubernetes, Vault can generate dynamic secrets that are time-bound and automatically revoked, reducing the risk of credential leakage.
+
+4. **Auditing and Logging**: Vault provides comprehensive auditing and logging capabilities, which are essential for monitoring access and usage of sensitive information.
+
+## What Options Are Provided by HashiCorp and What Would I Need to Build Myself?
+
+HashiCorp provides several features and tools to facilitate integration with Kubernetes:
+
+1. **Kubernetes Auth Method**: A built-in authentication method that allows Kubernetes service accounts to authenticate with Vault.
+2. **Vault Agent**: A client-side daemon that can manage secret fetching, renewal, and injection into application environments.
+3. **Vault Helm Chart**: Official Helm charts for deploying Vault in Kubernetes, which simplify the deployment process.
+4. **Secret Injection**: Integration options such as the Vault Injector that inject secrets directly into Kubernetes pods.
+
+However, you might need to build custom solutions for:
+
+1. **Application Integration**: Custom code or scripts to integrate Vault with your application logic.
+2. **Secret Synchronization**: Mechanisms to synchronize secrets between Vault and Kubernetes Secrets if needed.
+3. **Custom Policies**: Tailored Vault policies that match your organization’s security requirements.
+
+## Which Option Does HashiCorp Recommend in Most Cases?
+
+It depends (as expected)
+
+
+
+## Workshop
+
+Integrating HashiCorp Vault with Kubernetes enhances your secrets management capabilities, providing advanced security features, centralized control, and dynamic secrets. By ensuring secure integration, considering essential design factors, and leveraging HashiCorp’s tools and recommended practices, you can build a resilient and secure application infrastructure that meets modern security standards.

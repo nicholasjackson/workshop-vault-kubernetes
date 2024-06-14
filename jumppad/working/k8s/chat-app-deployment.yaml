@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-app
+  template:
+    metadata:
+      labels:
+        app: chat-app
+    spec:
+      containers:
+      - name: chat-app
+        image: guybarros/chat-app:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: MONGODB_SERVER
+          value: "chat-mongo.local"
+        - name: MONGODB_PORT
+          value: "27017"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-app
+spec:
+  selector:
+    app: chat-app
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: LoadBalancer

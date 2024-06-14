@@ -1,15 +1,3 @@
-resource "container_registry" "k8s" {
-  hostname = "registry.k8s.io"
-}
-
-resource "container_registry" "amazonaws" {
-  hostname = "amazonaws.com"
-}
-
-resource "container_registry" "pkg" {
-  hostname = "pkg.dev"
-}
-
 resource "k8s_cluster" "k3s" {
 
   network {
@@ -22,7 +10,7 @@ resource "k8s_cluster" "k3s" {
 
   config {
     docker {
-      no_proxy = ["registry.k8s.io", "pkg.dev"]
+      no_proxy = ["registry.k8s.io", "pkg.dev", "amazonaws.com"]
     }
   }
 }

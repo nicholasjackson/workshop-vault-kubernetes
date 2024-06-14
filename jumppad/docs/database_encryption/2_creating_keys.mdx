@@ -14,7 +14,11 @@ to retrieve the key.
 ### Run the following command to create a new RSA 4096 encryption key:
 
 ```shell
-vault write -f transit/keys/payments type=rsa-4096
+vault write -f transit/keys/chat type=rsa-4096
 ```
+
+<Task id="create_key">
+Run the previous command to enable the transit secrets engine.
+</Task>
 
 Next let's see how you can use Vault to encrypt data.

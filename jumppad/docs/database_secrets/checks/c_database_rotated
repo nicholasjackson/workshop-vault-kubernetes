@@ -1,3 +1,0 @@
-set -e
-
-validate history contains "vault write -force database/rotate-root/chat"

@@ -20,18 +20,20 @@ define a custom Time to Live (TTL) for every generated credential.
 
 ```shell
 vault write database/roles/writer \
-    db_name=payments \
-    creation_statements="CREATE ROLE \"\{{name}}\" WITH LOGIN PASSWORD '\{{password}}' VALID UNTIL '\{{expiration}}'; 
-    GRANT SELECT, INSERT, UPDATE ON payment_card TO \"\{{name}}\";" \
-    default_ttl="1h" \
-    max_ttl="24h"
+  db_name=chat \
+  creation_statements='{ "db": "admin", "roles": [ {"role": "readWrite", "db": "chat"}] }' \
+  default_ttl="1h" \
+  max_ttl="24h"
 ```
-
 
 Let's also create a create a `reader` role that allows the user to select records from the `payments` table:
 
 Why not have a go at writing this role yourself, the permissions should grant select on the `payment_card` table
 the other details will be the same as the `writer` role.
+
+<Task id="configure_roles">
+Create the reader and writer roles for the database.
+</Task>
 
 Did that work? If not you can find the soloution below.
 

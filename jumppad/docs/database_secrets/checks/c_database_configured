@@ -1,3 +1,0 @@
-set -e
-
-vault read database/config/chat

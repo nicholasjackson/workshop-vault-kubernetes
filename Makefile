@@ -1,5 +1,5 @@
 VSCODE_REPO=nicholasjackson/kubernetes-vault-vscode
-VSCODE_VERSION=v0.0.1
+VSCODE_VERSION=v0.0.2
 
 build_and_push_vscode:
 	docker run --rm --privileged multiarch/qemu-user-static --reset -p yes

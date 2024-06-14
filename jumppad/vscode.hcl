@@ -52,7 +52,7 @@ resource "container" "vscode" {
   }
 
   image {
-    name = "nicholasjackson/kubernetes-vault-vscode:v0.0.1"
+    name = "nicholasjackson/kubernetes-vault-vscode:v0.0.2"
   }
 
   volume {
@@ -91,7 +91,7 @@ resource "container" "vscode" {
     DEFAULT_FOLDER   = "/usr/src"
     LC_ALL           = "C"
     VAULT_ADDR       = module.vault_controller.output.vault_addr
-    VAULT_TOKEN = module.vault_controller.output.vault_outputs.vault_token
+    VAULT_TOKEN      = module.vault_controller.output.vault_outputs.vault_token
   }
 
   // vscode

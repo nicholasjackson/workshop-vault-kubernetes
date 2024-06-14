@@ -23,10 +23,10 @@ resource "book" "spring_vault" {
 
   chapters = [
     resource.chapter.vault_k8s_overview,
+    resource.chapter.static_secrets,
     resource.chapter.database_secrets,
     resource.chapter.database_encryption,
     resource.chapter.running_on_k8s,
-    resource.chapter.static_secrets,
   ]
 }
 

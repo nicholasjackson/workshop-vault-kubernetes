@@ -1,3 +1,0 @@
-set -e
-
-vault write -force database/rotate-root/chat

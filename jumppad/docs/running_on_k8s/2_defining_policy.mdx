@@ -2,23 +2,42 @@
 
 Policies are used to control access to Vault.  A policy is a HCL file that defines
 the paths that a token can access and the operations that can be performed on those
-paths.  For example the following policy allows access to create a dynamic 
+paths.  
+
+For example the following policy allows access to create a dynamic 
 database credential using the `writer` role and to encrypt data using the transit engine.
 
 ```javascript
 path "database/creds/writer" {
   capabilities = ["read", "create"]
 }
+```
 
-path "transit/encrypt/payments" {
+This policy allows access to encrypt data using the transit engine with the `chat` key.
+
+```javascript
+path "transit/encrypt/chat" {
   capabilities = ["update"]
 }
 ```
 
-Let's add this policy to the Vault server. The Vault CLI took has a command called 
+Policies are often combined to create a set of permissions that can be assigned to a token.
+The example application will need the correct policies to perform the following actions:
+
+* Create dynamic database credentials using the `writer` role
+* Encrypt data using the `chat` key
+* Decrypt data using the `chat` key
+* Ability to create PKI certificates for the `chat` role 
+* Access the `kv2' secret `config`
+
+Create a policy that allows the application to perform these actions.
+
+You can add this policy to the Vault server using the Vault CLI took has a command called 
 `vault policy` this allows you to read / write and list policy.
 
-### Using the `vault policy` command write the above policy to a policy called `payments`
+<Task id="create_policy">
+Using the `vault policy` command create a policy with the required access and save it to a policy called `chat`.
+</Task>
 
 Did you figure it out? If not the solution is below.
 
@@ -27,13 +46,25 @@ Did you figure it out? If not the solution is below.
   <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: command</summary>
 
 ```bash
-vault policy write payments - <<EOF
+vault policy write chat - <<EOF
 path "database/creds/writer" {
   capabilities = ["read", "create"]
 }
 
-path "transit/encrypt/payments" {
-  capabilities = ["update"]
+path "transit/encrypt/chat" {
+  capabilities = ["create","update"]
+}
+
+path "transit/decrypt/chat" {
+  capabilities = ["create","update"]
+}
+
+path "kv/data/chat/config" {
+  capabilities = ["read"]
+}
+
+path "pki/issue/chat" {
+  capabilities = ["create", "update"]
 }
 EOF
 ```

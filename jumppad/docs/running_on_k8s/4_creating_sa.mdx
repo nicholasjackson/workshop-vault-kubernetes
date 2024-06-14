@@ -6,14 +6,18 @@ will run your application.
 The first step is to create a service account for the application.  This service
 account will be used to authenticate to Vault.
 
-### Add the following to the file `./k8s/app.yaml':
-
 ```yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: payments
+  name: chat
 automountServiceAccountToken: false
 ```
 
-Next let's define a service so we can access our application.
+<Task id="create_sa">
+Create a servcie account called `chat` in the `default` namespace that will 
+be used to authenticate to Vault.
+</Task>
+
+Next let's see how you configure deployments for each of the different Vault Kubernetes
+integrations starting with the Vault Operator.

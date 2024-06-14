@@ -15,17 +15,36 @@ of authentication endpoints.  These are endpoints that can be used to authentica
 to Vault using a known secret such as a Kubernetes service account token, a GitHub
 token or a username and password.
 
-The authentication method for Kubernetes has already been configured for your
-cluster.  For your information the command looks like this:
+To configure the authentication method for Kubernetes you will need the following
+three things:
+
+|      |      |
+| ---- | ---- |
+| `token_reviewer_jwt` | The JWT token that the Kubernetes service account uses to authenticate to the API server. |
+| `kubernetes_host`    | The address of the Kubernetes API server. |
+| `kubernetes_ca_cert` | The CA certificate used to validate the Kubernetes API server. |
+
+The kubernetes secret `vault-k8s-auth-secret` in the `vault` namespace contains the details of the ca_cert and
+the token.  
+
+Before configuring the Kubernetes authentication method you will need to extract the ca_cert and the token from the secret.
+Write a command that fetches these values and write them to files `/k8s.crt` and `/k8s.token` respectively.
+
+<p>
+<details>
+  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: command</summary>
 
 ```bash
-vault write auth/kubernetes/config \
-  token_reviewer_jwt=<service account token> \
-  kubernetes_host="https://kubernetes.default.svc:443" \
-  kubernetes_ca_cert=<kubernetes ca cert>
+# Configure kubernetes auth
+kubectl get secret vault-k8s-auth-secret -n vault -o json | jq -r '.data."ca.crt"' | base64 -d > /usr/src/k8s.crt
+kubectl get secret vault-k8s-auth-secret -n vault -o json | jq -r '.data.token' | base64 -d > /usr/src/k8s.token
 ```
+</details>
+</p>
 
-Besides checking that the service account token has been correctly signed, 
-Vault uses the Kubernetes API to validate that the presented service account token 
-is valid.  For this reason the `kubernetes_host` and `kubernetes_ca_cert` are required
-when configuring the Kubernetes authentication method.
+<Task id="fetch_secrets">
+Fetch the Kubernetes secret `vault-k8s-auth-secret` and write the `ca.crt` and `token` to files `/usr/src/k8s.crt` and `/usr/src/k8s.token` respectively.
+</Task>
+
+Now we have the details required to configure the Kubernetes authentication method. Let's
+see how to configure it. 

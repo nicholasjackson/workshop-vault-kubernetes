@@ -2,19 +2,23 @@
 
 Once you have defined the policies that you want to use you need to create a role
 that associates the policy with a Kubernetes service account.  The following command
-creates a role called `payments` that associates the `payments` policy with the
-`payments` service account in the `default` namespace.
+creates a role called `chat` that associates the `chat` policy with the
+`chat` service account in the `default` namespace.
 
-### Run the following command
 
-```bash
-vault write auth/kubernetes/role/payments \
-  bound_service_account_names=payments \
+<Task id="create_role">
+Run the following command to create a role that associates the `chat` policy with the `chat` service account.
+
+```shell
+vault write auth/kubernetes/role/chat \
+  bound_service_account_names=chat \
   bound_service_account_namespaces=default \
-  token_policies=payments
+  token_policies=chat
   ttl=24h
 ```
 
+</Task>
+
 Now everything has been configured, let's create a new Kubernetes deployment
-that uses the `payments` service account to authenticate to Vault and runs
+that uses the `chat` service account to authenticate to Vault and runs
 the application.

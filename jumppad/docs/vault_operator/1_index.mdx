@@ -1,0 +1,38 @@
+# Introduction
+
+The Vault Operator is a Kubernetes operator that simplifies the process of deploying 
+and managing secrets stored in HashiCorp Vault. The operator extends the Kubernetes API 
+with custom resources that allow you to synchronize secrets stored in Vault with Kubernetes.
+
+## Configuring Authentication
+
+To enable the operator to access the secrets in Vault you need to configure an authenticcation
+method.  This is used by the secrets CRDs to authenticate to Vault and so they have access
+to the relevant secrets.
+
+The relevant parameters for the VaultAuth CRD are as follows:
+
+- `method` - The authentication method to use.  This is going to be `kubernetes` as we have
+configured the Kubernetes auth method.
+- `mount` - The path where the Kubernetes auth method is mounted.  You configured
+this to be the default `kubernetes` path.
+- `role` - The role that the service account will use to authenticate to Vault.
+- `serviceAccount` - The service account that will be used to authenticate to Vault, this 
+service account must be in the same namespace as the VaultAuth CRD.
+
+<Task id="configure_auth">
+
+```yaml
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: chat-auth
+spec:
+  method: kubernetes
+  mount: kubernetes 
+  kubernetes:
+    role: chat
+    serviceAccount: chat
+```
+
+</Task>

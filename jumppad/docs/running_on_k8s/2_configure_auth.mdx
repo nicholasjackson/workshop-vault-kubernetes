@@ -1,0 +1,62 @@
+# Enabling and Configuring Kubernetes Authentication
+
+First thing that needs to be done is to enable the Kubernetes authentication method.
+
+Enabling the Kubernetes authentication method is a very similar process as you have 
+completed in previous exercises. Why not take a look at the documentation and 
+see if you can enable the Kubernetes authentication method.
+
+<a href="https://developer.hashicorp.com/vault/docs/auth/kubernetes" target="_blank">https://developer.hashicorp.com/vault/docs/auth/kubernetes</a>
+
+<p>
+<details>
+  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: command</summary>
+
+```bash
+# Enable kubernetes auth
+vault auth enable kubernetes
+```
+
+</details>
+</p>
+
+<Task id="enable_auth">
+The Kubernetes authentication method has been enabled.
+</Task>
+
+Now that the authentication method has been enabled let's configure it.
+
+## Configuring the Kubernetes Authentication Method
+
+To configure the Kubernetes authentication method you 
+write to the path `auth/kubernetes/config` with the three parameters that you
+learned about in the previous section.
+
+The `kubernetes_host` must be a resolvable path from the Vault server to the Kubernetes
+API. In this workshop Vault is running on the same Kubernetes cluster as the API server,
+you can use the internal service reference when configuring `https://kubernetes.default.svc:443`.
+
+Besides checking that the service account token has been correctly signed, 
+Vault uses the Kubernetes API to validate that the presented service account token 
+is valid.  For this reason the `kubernetes_host` and `kubernetes_ca_cert` are required
+when configuring the Kubernetes authentication method.
+
+Why not have a go at configuring the Kubernetes authentication method.
+
+<p>
+<details>
+  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: command</summary>
+
+```bash
+vault write auth/kubernetes/config \
+  token_reviewer_jwt=@/usr/src/k8s.token \
+  kubernetes_host="https://kubernetes.default.svc:443" \
+  kubernetes_ca_cert=@/usr/src/k8s.crt
+```
+
+</details>
+</p>
+
+<Task id="configure_auth">
+Configure the Kubernetes auth method.
+</Task>

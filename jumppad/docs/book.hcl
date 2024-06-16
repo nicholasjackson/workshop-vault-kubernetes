@@ -26,6 +26,7 @@ resource "book" "spring_vault" {
     resource.chapter.static_secrets,
     resource.chapter.database_secrets,
     resource.chapter.database_encryption,
+    resource.chapter.pki,
     resource.chapter.running_on_k8s,
     resource.chapter.vault_operator,
   ]

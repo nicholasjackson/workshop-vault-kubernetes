@@ -1,0 +1,60 @@
+# Deploying the Chat Application
+
+If you take a look at the file `chat-operator.yaml` you will see a deployment for 
+the chat application. This deployment uses the secrets that you created in 
+the previous sections.
+
+All the secrets are either mounted as files or environment variables in the
+deployment. The `chat-pki` secret is mounted as a volume so that the application
+can read the certificate and private key. The core benefit to using the Vault
+operator is that the deployment file is completely vanilla.
+
+```yaml
+  env:
+  - name: HTTP_PORT
+    value: "5000"
+  - name: MONGODB_SERVER
+    value: "10.100.0.180"
+  - name: MONGODB_PORT
+    value: "27017"
+  - name: MONGODB_AUTHDB
+    value: "admin"
+  - name: MONGODB_USERNAME
+    valueFrom:
+      secretKeyRef:
+        name: chat-database
+        key: username
+  - name: MONGODB_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: chat-database
+        key: password
+  - name: HTTP_TLS
+    value: "true"
+  - name: PRIVATE_KEY_PATH
+    value: "/etc/ssl/certs/key.pem"
+  - name: PUBLIC_CERT_PATH
+    value: "/etc/ssl/certs/cert.pem"
+  volumeMounts:
+  - name: chat-pki
+    mountPath: /etc/ssl/certs
+    readOnly: true
+volumes:
+  - name: chat-pki
+    secret:
+      secretName: chat-pki
+      items:
+      - key: certificate
+        path: cert.pem
+      - key: private_key
+        path: key.pem
+```
+
+<Task id="deploy_operator">
+Deploy the chat application to your Kubernetes cluster using the following command:
+
+```shell
+kubectl apply -f chat-operator.yaml
+```
+</Task>
+

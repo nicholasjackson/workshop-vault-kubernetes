@@ -1,0 +1,37 @@
+# Creating a Root Certificate Authority
+
+
+Before you can start issuing certificates, you need to create a root certificate 
+authority (CA). The root CA is the top-level certificate in a certificate chain and 
+is used to sign other certificates. The root CA is used to establish trust in the 
+certificates that are issued by the CA.
+
+Vault has two main options for dealing with CA's, you can either use a self-signed 
+CA or you can use an external CA. In this tutorial, we will be using a self-signed CA.
+
+## Creating the Root CA
+
+To create the root CA you need to use the `pki/root/generate/[name]` endpoint.
+
+This endpoint generates a new root certificate and key pair and you can specify the
+common name for the certificate and the default time-to-live (TTL) for the certificates
+generated using this root.
+
+Passing the required `commond_name` parameter sets the the common name for the root
+cert.
+
+
+<Task id="generate_root">
+
+Run the following command to generate a new root certificate authority.
+
+```shell
+vault write pki/root/generate/internal \
+  common_name=local.jmpd.in \
+  ttl=8760h
+```
+
+</Task>
+
+Now that you have created the root CA, let's see how to create a role for
+generating leaf certificates.

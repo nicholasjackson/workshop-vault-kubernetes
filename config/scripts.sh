@@ -16,13 +16,13 @@ vault write -force database/rotate-root/chat
 # Create the roles
 vault write database/roles/writer \
   db_name=chat \
-  creation_statements='{ "db": "admin", "roles": [{ "role": "readWrite" }, {"role": "read", "db": "foo"}] }' \
+  creation_statements='{ "db": "admin", "roles": [{"role": "readWrite", "db": "chat"}] }' \
   default_ttl="1h" \
   max_ttl="24h"
 
 vault write database/roles/reader \
   db_name=chat \
-  creation_statements='{ "db": "admin", "roles": [{ "role": "readWrite" }, {"role": "read", "db": "foo"}] }' \
+  creation_statements='{ "db": "admin", "roles": [{"role": "read", "db": "chat"}] }' \
   default_ttl="1h" \
   max_ttl="24h"
 

@@ -2,6 +2,10 @@ variable "docs_url" {
   default = "http://localhost"
 }
 
+variable "base_url" {
+  default = "localhost"
+}
+
 variable "install_vault" {
   default = true
 }

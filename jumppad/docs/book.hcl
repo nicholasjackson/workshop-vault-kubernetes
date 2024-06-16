@@ -6,6 +6,14 @@ variable "vscode" {
   default = ""
 }
 
+variable "base_url" {
+  default = ""
+}
+
+variable "docs_url" {
+  default = ""
+}
+
 variable "db_address" {
   default = ""
 }
@@ -19,7 +27,7 @@ variable "vault_addr" {
 }
 
 resource "book" "spring_vault" {
-  title = "Using Spring Vault"
+  title = "Integrating Vault and Kubernetes"
 
   chapters = [
     resource.chapter.vault_k8s_overview,
@@ -29,6 +37,7 @@ resource "book" "spring_vault" {
     resource.chapter.pki,
     resource.chapter.running_on_k8s,
     resource.chapter.vault_operator,
+    resource.chapter.vault_controller,
   ]
 }
 

@@ -1,1 +1,38 @@
-# PKI Engine
+# PKI Secrets
+
+Vault has the capability to generate X.509 certificates for use in your applications.
+This is done using the PKI secrets engine, which is a secrets engine that can
+generate X.509 certificates.
+
+The PKI secrets engine generates dynamic X.509 certificates. With this secrets engine, 
+services can get certificates without going through the usual manual process of generating 
+a private key and CSR, submitting to a CA, and waiting for a verification and signing 
+process to complete. Vault's built-in authentication and authorization mechanisms
+provide the verification functionality.
+
+Let's see how you can enable and configure the PKI secrets engine in Vault to generate
+X.509 certificates for our applications.
+
+## Enabling the PKI Secrets Engine
+
+Enabling the PKI secrets engine is the same as you have done for the other engines in this
+tutorial.  
+
+<Task id="enable_pki">
+
+Enable the PKI secrets engine at the path `pki`.
+
+</Task>
+
+Did you manage to create the `VaultDynamicSecret` CRD? If not the solution is below.
+
+<p>
+<details>
+  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: VaultDynamicSecret</summary>
+
+```shell
+vault secrets enable -path=pki pki
+```
+
+</details>
+</p>

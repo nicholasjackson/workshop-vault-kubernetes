@@ -1,0 +1,27 @@
+# Vault Controller
+
+In the previous section you saw how to deploy the application with the Vault Operator.
+In this section you will see how to deploy the same application using the Vault Controller.
+
+Where the Operator used CRDs to sync secrets from Vault to Kubernetes, the Controller uses
+annotations on the Kubernetes resources to inject the secrets.
+
+The most basic annotation is `vault.hashicorp.com/agent-inject: "true"`. This annotation
+adds the Vault Agent sidecar to the pod and injects the secrets into the pod.
+
+You also need to specify the role that the Vault Agent should use for authentication.
+When the deployment is created the Vault Controller mutates the pod to include the Vault Agent
+and to setup the authention with Vault. Like the Operator, the Controller uses the Kubernetes
+Service Account to authenticate with Vault.
+
+```yaml
+annotations:
+  vault.hashicorp.com/agent-inject: "true"
+  vault.hashicorp.com/role: "chat"
+```
+
+<Task id="add_annotations_1">
+Add the above annotations to the chat-controller.yaml file.
+</Task>
+
+Next let's see how you can add static secrets to the deployment.

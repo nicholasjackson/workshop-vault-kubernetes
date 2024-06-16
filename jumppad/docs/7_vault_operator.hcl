@@ -5,6 +5,8 @@ resource "chapter" "vault_operator" {
     configure_auth    = resource.task.configure_operator_auth
     configure_static  = resource.task.configure_operator_static
     configure_dynamic = resource.task.configure_operator_dynamic
+    configure_pki     = resource.task.configure_pki
+    deploy_operator   = resource.task.deploy_operator
   }
 
   page "introduction" {
@@ -22,6 +24,17 @@ resource "chapter" "vault_operator" {
   page "pki" {
     content = template_file("./vault_operator/4_pki_secret.mdx", {})
   }
+
+  page "deploy" {
+    content = template_file("./vault_operator/5_deploy.mdx", {})
+  }
+
+  page "testing" {
+    content = template_file("./vault_operator/6_testing.mdx", {
+      operator_url = "https://${variable.base_url}:5000"
+      base_url     = variable.base_url
+    })
+  }
 }
 
 resource "task" "configure_operator_auth" {
@@ -38,6 +51,10 @@ resource "task" "configure_operator_auth" {
     check {
       script = <<-EOF
         kubeclt get vaultauth chat-auth
+        if [ $? -ne 0 ]; then
+          echo "VaultAuth chat-auth not found"
+          exit 1
+        fi
       EOF
 
       failure_message = "Create a VaultAuth CRD and deploy it to the default namespace"
@@ -150,6 +167,87 @@ resource "task" "configure_operator_dynamic" {
             create: true
             name: chat-database
         EOT
+      EOF
+
+      timeout = 60
+    }
+  }
+}
+
+
+resource "task" "configure_pki" {
+  prerequisites = []
+
+  config {
+    user   = "root"
+    target = variable.vscode
+  }
+
+  condition "pki_configured" {
+    description = "The VaultPKISecret has been created"
+
+    check {
+      script = <<-EOF
+        kubeclt get vaultpkisecret vault-pki-secret
+        if [ $? -ne 0 ]; then
+          echo "VaultPKISecret vault-pki-secret not found"
+          exit 1
+        fi
+      EOF
+
+      failure_message = "Create a VaultPKISecret CRD and deploy it to the default namespace"
+    }
+
+    solve {
+      script = <<-EOF
+        cat <<EOT | kubectl apply -f -
+        ---
+        apiVersion: secrets.hashicorp.com/v1beta1
+        kind: VaultPKISecret
+        metadata:
+          name: vault-pki-secret
+        spec:
+          vaultAuthRef: chat-auth
+          mount: pki
+          role: chat
+          commonName: chat.local.jmpd.in
+          destination:
+            create: true
+            name: chat-pki
+        EOT
+      EOF
+
+      timeout = 60
+    }
+  }
+}
+
+resource "task" "deploy_operator" {
+  prerequisites = []
+
+  config {
+    user   = "root"
+    target = variable.vscode
+  }
+
+  condition "deployment_created" {
+    description = "Create the deployment for the chat application"
+
+    check {
+      script = <<-EOF
+        kubectl get deployments chat-operator
+        if [ $? -ne 0 ]; then
+          echo "Chat operator deployment not found"
+          exit 1
+        fi
+      EOF
+
+      failure_message = "Deploy the chat operator using the command `kubectl apply -f chat-operator.yaml`"
+    }
+
+    solve {
+      script = <<-EOF
+        kubeclt apply -f /usr/src/chat-operator.yaml
       EOF
 
       timeout = 60

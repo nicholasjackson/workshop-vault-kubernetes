@@ -1,0 +1,73 @@
+# Creating an Application Certificate
+
+To generate certificates for an application, you need to create a role in the 
+PKI secrets engine. The role defines the allowed domains and the maximum time-to-live 
+(TTL) for the certificates.
+
+There are a number of parameters that you can set for the role, for a full list of
+parameters see the API documentation at:
+
+https://developer.hashicorp.com/vault/api-docs/secret/pki#generate-certificate-and-key
+
+For this example we are going to issue a certificate that is valid for the a single
+domain `chat.local.jmpd.in`. To do this we need to create a role called `chat` with
+the following parameters:
+
+- `allowed_domains` - The domain that the certificate is valid for.
+- `allow_bare_domains` - If set to true, the certificate is valid for the bare domain.
+
+<Task id="create_cert_role">
+Create a role called `chat` that is valid for the domain `chat.local.jmpd.in`.
+</Task>
+
+<p>
+<details>
+  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution</summary>
+
+```shell
+vault write pki/roles/chat \
+  allowed_domains=chat.local.jmpd.in \
+  allow_bare_domains=true \
+  max_ttl=72h
+```
+
+</details>
+</p>
+
+## Issue a Certificate
+
+Now that you have created the role, you can issue a certificate for the domain `chat.local.jmpd.in`.
+
+```shell
+vault write pki/issue/chat common_name=chat.local.jmpd.in
+```
+
+You should see output like the following:
+
+```shell
+Key                 Value
+---                 -----
+ca_chain            [-----BEGIN CERTIFICATE-----
+MIIDOzCCAiOgAwIBAgIUHCQfWhdlr8Yr03+nVuWuvO7rmM0wDQYJKoZIhvcNAQEL
+BQAwGDEWMBQGA1UEAxMNbG9jYWwuam1wZC5pbjAeFw0yNDA2MTYwNTQ1MDFaFw0y
+NDA3MTgwNTQ1MzFaMBgxFjAUBgNVBAMTDWxvY2FsLmptcGQuaW4wggEiMA0GCSqG
+SIb3DQEBAQUAA4IBDwAwggEKAoIBAQCutAbM20Y0ALHN1R6PqdjRUpZrDTyFQshp
+ZvwrIN6b9m4sP9pMyg1q1hyDFCVSo+88Zvbwgwd4QYwfCi/PgG5ITPQhyFxtWjcg
+3zsjRde7HjGURWQuld8UwHr2rWgYeCCfy6HnsRBrPS+6jj7O+p4dOnW32nd9NpOs
+3hN5wOvNJb+zwk0QAkXbKTxCrpb7qjGDFVe7xqcaTdaRB7BeLA0QM1WQdqQGsiFo
+h8XFAH1+jDR7WM1oIzmQrXrQycC2gFrShcejKBoA9Zgv1Afbj441d6KN1j0C/CfG
+toiCqSZn6uKz1fUAe7QsUqerB3YnannmTPaz84BXFOOiYH8F4xWFAgMBAAGjfTB7
+MA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBTwKxY3
+2GB79j1RAo9+9Aantnl3dzAfBgNVHSMEGDAWgBTwKxY32GB79j1RAo9+9Aantnl3
+dzAYBgNVHREEETAPgg1sb2NhbC5qbXBkLmluMA0GCSqGSIb3DQEBCwUAA4IBAQAt
+PI7QrGOXnBcPEo9hvWKoUMtizKHCgN8jugucgtYnM9k3ZvhqavJDzw/Z81P3TR6h
+pzwqs/d9PB7d1bfB26HQRcTYuc38nlh8Dj2nQsVgG2qKl4LU9q9r6dwYsSgEf1fV
+XZENFS6Gw4WLJ2iYKSMF92aFET12ROtxYG8izfLgxlJ13/GLeG1AabrvoOX596AE
+gJAf0ELqOA6OA5FXALrvw3oOfflrOwYsrlj68EX2MEo8LsLZ5YDYNucoB6iglWjl
+/OzbO3UzWsoIwiqzygvJw9Q7oOKiDXH6fuDEW9rdc3DlwyKCn6CRL5thDFUd2KEs
+PaWJGSF20bZ1qkHgEtG2
+-----END CERTIFICATE-----]
+```
+
+Now you have configured the certificates, transit, static and dynamic secrets in Vault,
+let's see how to use these secrets in Kubernetes.

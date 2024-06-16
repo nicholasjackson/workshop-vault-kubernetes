@@ -1,0 +1,30 @@
+# Testing
+
+Let's now open the application UI in the browser and test the application.
+
+If you open the following URL in a new browser window you should see a warning
+page that the connection is not secure.
+
+{{operator_url}}
+
+![](/assets/not_private.png)
+
+This is beacasue the certificate that we have issued is not trusted by the browser
+as it is a self signed certificate. For your real world environments you can
+distribute the CA certificate to your clients so that they trust the certificate.
+
+However for this workshop we can ignore the warning and proceed to the application.
+
+Click on the `Advanced` button and then click on the `Proceed to {{base_url}}
+ (unsafe)` link.
+
+You should now see the chat application UI.
+
+![](/assets/app.png)
+
+Try sending a message in the chat application. You should see the message appear
+in the chat window.
+
+Congratulations you have successfully deployed a secure chat application to Kubernetes
+using the Vault Operator. Next let's see how the same can be achieved using the
+Vault controller pattern.

@@ -34,3 +34,31 @@ module "vault_operator" {
     vault_addr = "http://vault.vault.svc.cluster.local:8200"
   }
 }
+
+resource "ingress" "chat_operator" {
+  port = 5000
+
+  target {
+    resource = resource.k8s_cluster.k3s
+    port     = 5000
+
+    config = {
+      service   = "chat-operator"
+      namespace = "default"
+    }
+  }
+}
+
+resource "ingress" "chat_controller" {
+  port = 5001
+
+  target {
+    resource = resource.k8s_cluster.k3s
+    port     = 5001
+
+    config = {
+      service   = "chat-controller"
+      namespace = "default"
+    }
+  }
+}

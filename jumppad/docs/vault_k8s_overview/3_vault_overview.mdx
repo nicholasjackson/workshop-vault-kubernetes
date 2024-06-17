@@ -1,0 +1,56 @@
+# Vault Architecture
+
+Vault is Hashicorp's Secret Manager. it is a highly available, clustered solution that can be used in many different use cases. What do you need to understand to have a succesful vault implementation? 
+
+![Vault Architecture](/assets/vault_architecture.png)
+
+## API First
+
+Vault is architected as an API first solution, that means that everything in vault first starts life as an api and then gets rolled out to Terminal Client, Web Client and other Libraries. 
+
+it is possible to find our the curl string for any command directly from the terminal client by using the flag `-output-curl-string` .
+
+```shell
+vault kv get -output-curl-string -mount="EU_GDPR_data" "orders/acct1"
+
+curl -H "X-Vault-Request: true" -H "X-Vault-Namespace: admin/" -H "X-Vault-Token: $(vault print token)" https://do-not-delete-ever-v2-public-vault-cf6a1d76.5773df81.z1.hashicorp.cloud:8200/v1/EU_GDPR_data/data/orders/acct1
+```
+
+## Namespaces
+
+Namespaces are Vault's multi tenancy solution. while every namespace shares the same TCP listener they are expected to have their own AuthN/AuthZ processes and be used for different workspaces. to undestand more about namespace modeling, Vault's Validated design guide is a great reference: 
+
+https://developer.hashicorp.com/validated-designs/vault-operating-guides-adoption/introduction
+
+## Authentication
+
+Vault's default Authentication process is token based. Vault provides different Authentication methods for different use cases. it is always recommended that Identies come from the nearest Identity Provider. so while authorization is managed in Vault, Authentication can leverage and be centralised with identity providers. for Kubernetes workloads, there is a kuberenetes Auth method which we will look at further in this workshop. for clouds there are cloud specific auth methods, for people there are OIDC/SAML use cases for CI/CD there are JWT / PKI auth methods and if all else fails there is a built in userpass or approle (userpass++) auth methods.
+
+## Authorization (RBAC)
+
+Vault Authorization model is Role Based Access Control via Access Control List(ACL) policies. Vault's ACL policies are path based, paths are the api endpoints that are called and the http verb used to call them (CRUD). Vault always recommends having the least amount of access necessary for a use case. so if all that is needed is to read a secret; then you have a policy that only allows that.
+
+```hcl
+path "IT/Secret_Store_1/*" {
+  capabilities = [ "read", "list"]
+}
+```
+
+## Secret Engines.
+
+Secret engines are the abstraction of different secret types. using secret engines is the focus of vault. there are three types of secret which we will talk about: Statis Secrets, Dynamic Secrets, Encryption as a Service.
+
+### Static Secrets
+
+This is where it all started. Static secret are secure pieces of information that need a secure enclave to be stored. this can be any Key Value secret. as such any information that needs to be stored in vault is a static secret.  the Key Value (KV) secret engine is used for this. there are two versions of KV Secret engine, the original KV and the updated verion 2 which supports versioning and metadata. 
+
+
+## Dynamic Secrets
+
+When are secrets needed? when they'll be used! with Dynamic secrets, instead of storing secrets in Vault, Vault is configured to go and create dynamic, short lived, managed secrets. these are usually frequently rotated and revoked after their TTLs. Database Credentials, Cloud Credentials, PKI certificates, SSH CA certificates, LDAP user, K8s Service Accounts are just some implementations of Dynamic Secrets.
+
+## Encryption as a Service. 
+
+Encryption as a service standarises cryptography usage for different clients by centralizing key management and providing API access for Encryption,Decryption,HMAC,Sign, Verify. Vault Enterprise also provides FPE, TDE, KMIP and key destribution secret engines. this greatly enhance security by not needed to distribute encryption keys and separating key management from key usage.
+
+now lets look at using these secret engines.

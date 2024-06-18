@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat-controller
+  template:
+    metadata:
+      labels:
+        app: chat-controller
+    spec:
+      serviceAccountName: chat
+      automountServiceAccountToken: true
+      containers:
+      - name: chat-controller
+        image: guybarros/chat-app:0.11
+        args:
+          ['sh', '-c', '. /vault/secrets/config && npm start']
+        ports:
+        - containerPort: 5001
+        env:
+        - name: HTTP_PORT
+          value: "5002"
+        - name: MONGODB_SERVER
+          value: "10.100.0.180"
+        - name: MONGODB_PORT
+          value: "27017"
+        - name: MONGODB_AUTHDB
+          value: "admin"
+        - name: HTTP_TLS
+          value: "true"
+        - name: PRIVATE_KEY_PATH
+          value: "/vault/secrets/key.pem"
+        - name: PUBLIC_CERT_PATH
+          value: "/vault/secrets/cert.pem"
+        - name: USE_VAULT
+          value: "true"
+        - name: VAULT_TRANSIT_KEY
+          value: "chat"
+        - name: VAULT_ADDR
+          value: "http://127.0.0.1:8200"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-controller
+spec:
+  selector:
+    app: chat-controller
+  ports:
+    - protocol: TCP
+      port: 5002
+      targetPort: 5002
+  type: LoadBalancer

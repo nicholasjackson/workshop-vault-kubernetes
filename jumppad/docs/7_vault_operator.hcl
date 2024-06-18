@@ -2,11 +2,11 @@ resource "chapter" "vault_operator" {
   title = "Using the Vault Operator"
 
   tasks = {
-    configure_auth    = resource.task.configure_operator_auth
-    configure_static  = resource.task.configure_operator_static
-    configure_dynamic = resource.task.configure_operator_dynamic
-    configure_pki     = resource.task.configure_pki
-    deploy_operator   = resource.task.deploy_operator
+    configure_operator_auth = resource.task.configure_operator_auth
+    configure_static        = resource.task.configure_operator_static
+    configure_dynamic       = resource.task.configure_operator_dynamic
+    configure_pki           = resource.task.configure_pki
+    deploy_operator         = resource.task.deploy_operator
   }
 
   page "introduction" {
@@ -50,7 +50,7 @@ resource "task" "configure_operator_auth" {
 
     check {
       script = <<-EOF
-        kubeclt get vaultauth chat-auth
+        kubectl get vaultauth chat-auth
         if [ $? -ne 0 ]; then
           echo "VaultAuth chat-auth not found"
           exit 1
@@ -94,7 +94,7 @@ resource "task" "configure_operator_static" {
 
     check {
       script = <<-EOF
-        kubeclt get vaultstaticsecret vault-static-secret
+        kubectl get vaultstaticsecret vault-static-secret
         if [ $? -ne 0 ]; then
           echo "VaultStaticSecret vault-static-secret not found"
           exit 1
@@ -141,7 +141,7 @@ resource "task" "configure_operator_dynamic" {
 
     check {
       script = <<-EOF
-        kubeclt get vaultdynamicsecret vault-database-secret
+        kubectl get vaultdynamicsecret vault-database-secret
         if [ $? -ne 0 ]; then
           echo "VaultDynamicSecret vault-database-secret not found"
           exit 1
@@ -188,7 +188,7 @@ resource "task" "configure_pki" {
 
     check {
       script = <<-EOF
-        kubeclt get vaultpkisecret vault-pki-secret
+        kubectl get vaultpkisecret vault-pki-secret
         if [ $? -ne 0 ]; then
           echo "VaultPKISecret vault-pki-secret not found"
           exit 1

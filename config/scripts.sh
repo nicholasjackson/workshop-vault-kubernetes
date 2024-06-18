@@ -30,7 +30,7 @@ vault write database/roles/reader \
 vault secrets enable transit
 
 # Create the key
-vault write -f transit/keys/chat-key type=rsa-4096
+vault write -f transit/keys/chat type=rsa-4096
 
 # Enable PKI
 vault secrets enable pki

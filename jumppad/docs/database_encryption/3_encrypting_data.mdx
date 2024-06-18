@@ -4,7 +4,7 @@ Let's see how we can use this key to encrypt data. Run the following command to 
 credit card number. Note the `plaintext` parameter requires base64 encoded text.
 
 ```shell
-vault write transit/encrypt/payments plaintext=$(base64 <<< "1234-5678-9012-3456")
+vault write transit/encrypt/chat plaintext=$(base64 <<< "1234-5678-9012-3456")
 ```
 
 The output will be a `ciphertext` value that you can store in your database.

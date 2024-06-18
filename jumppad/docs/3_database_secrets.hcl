@@ -122,7 +122,10 @@ resource "task" "configure_roles" {
 
     check {
       script = <<-EOF
-        vault read database/roles/writer
+        vault read database/roles/writer 
+        if [ $? -ne 0 ]; then
+          exit 1
+        fi
       EOF
 
       failure_message = "Run the command to create the writer role"
@@ -147,6 +150,9 @@ resource "task" "configure_roles" {
     check {
       script = <<-EOF
         vault read database/roles/reader
+        if [ $? -ne 0 ]; then
+          exit 1
+        fi
       EOF
 
       failure_message = "Run the command to create the reader role"

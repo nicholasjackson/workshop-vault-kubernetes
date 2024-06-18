@@ -247,7 +247,7 @@ resource "task" "deploy_operator" {
 
     solve {
       script = <<-EOF
-        kubeclt apply -f /usr/src/chat-operator.yaml
+        kubectl apply -f /usr/src/chat-operator.yaml
       EOF
 
       timeout = 60

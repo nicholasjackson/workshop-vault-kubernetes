@@ -13,7 +13,7 @@ We will configure the database secrets engine for a MongoDB database. The connec
 URL should be in the format:
  
 ```
-postgresql://\{{username}}:\{{password}}@hostname:port/database_name?sslmode=disable
+mongodb://\{{username}}:\{{password}}@10.100.0.180:27017/admin?tls=false"
 ```
 
 `\{{username}}` and `\{{password}}` are template variables, the actual username 

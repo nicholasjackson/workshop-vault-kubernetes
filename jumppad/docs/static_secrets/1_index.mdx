@@ -1,32 +1,11 @@
 # Static secrets
 
-Another of Vault and Spring boots capabilities is to enable the automatic
-injection of secrets as a property.
+Static secrets are the most primative type of secrets that you will use in Vault.
+However, they are also incredibly useful for managing static items such as API keys
+that your application requires.
 
-When configured, upon startup Spring will attempt to retrieve secrets from the following
-paths:
-
-```shell
-/secret/{application}/{profile}
-/secret/{application}
-/secret/{defaultContext}/{profile}
-/secret/{defaultContext}
-```
-
-The secrets that are stored at that path are automatically read by Spring
-and can then be injected using the following convention.
-
-```java
-@Value("${key name}")
-String password;
-```
-
-i.e given a secret exists with the key `password`, you could define the following.
-
-```java
-@Value("${password}")
-String password;
-```
+In this section you will learn how you can use the static secrets or KV engine within
+Vault.
 
 ## Enabling the Vault secrets engine
 
@@ -35,10 +14,12 @@ the details on how to do this at the following location.
 
 https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2
 
-**HINT** You need to enable the engine at the path `secret` this requires a
-specific parameter
+**HINT** You need to enable the engine at the path `kv` and
+use version `2` of the engine, this requires specific parameters.
 
-### Enable the kv2 engine at the path `secret`
+<Task id="enable_secrets">
+Enable the kv2 engine at the path `secret`
+</Task>
 
 Did that work? If not you can find the soloution below.
 
@@ -48,7 +29,7 @@ Did that work? If not you can find the soloution below.
 
 
 ```shell
-vault secrets enable -version=2 -path=secret kv
+vault secrets enable -version=2 -path=kv kv
 ```
 
 </details>

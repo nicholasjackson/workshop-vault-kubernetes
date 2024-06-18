@@ -19,10 +19,10 @@ spec:
       - name: chat-app
         image: guybarros/chat-app:0.11
         ports:
-        - containerPort: 5000
+        - containerPort: 5001
         env:
         - name: HTTP_PORT
-          value: "5000"
+          value: "5001"
         - name: MONGODB_SERVER
           value: "10.100.0.180"
         - name: MONGODB_PORT
@@ -69,6 +69,6 @@ spec:
     app: chat-operator
   ports:
     - protocol: TCP
-      port: 5000
-      targetPort: 5000
+      port: 5001
+      targetPort: 5001
   type: LoadBalancer

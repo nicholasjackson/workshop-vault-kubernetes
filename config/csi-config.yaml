@@ -33,14 +33,17 @@ spec:
   provider: vault
   parameters:
     roleName: 'chat'
+    vaultAddress: 'http://vault.vault.svc:8200'
     objects: |
-      - objectName: "cert"
+      - objectName: "cert.pem"
         secretPath: "pki/issue/chat"
+        method: "PUT"
         secretKey: "certificate"
         secretArgs:
-          common_name=chat.local.jmpd.in
-      - objectName: "key"
+          common_name: chat.local.jmpd.in
+      - objectName: "key.pem"
         secretPath: "pki/issue/chat"
+        method: "PUT"
         secretKey: "private_key"
         secretArgs:
-          common_name=chat.local.jmpd.in
+          common_name: chat.local.jmpd.in

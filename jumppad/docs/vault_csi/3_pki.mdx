@@ -1,0 +1,65 @@
+# PKI Secrets
+
+When using the CSI driver there is only one type of CRD for dealing with all
+of Vaults different secrets. The only main difference between syncing a PKI 
+secret and a Database secret using `SecretProviderClass` resources is that
+you need to provide additional arguments for the `common_name`.
+
+`SexretProviderClass` enables this through the `secretArgs` parameter
+
+```yaml
+secretKey: "certificate"
+secretArgs:
+  common_name: chat.local.jmpd.in
+```
+
+Create a new `SecretProviderClass` resource called `vault-pki-creds` that 
+syncs the Vault secret `pki/issue/chat`. You will need to  define two objects 
+one for the Vault key `certificate` and one for the `private_key`.
+
+**Note:** If you look at the file `chat-csi.yaml` you will see that the deployment
+is loading the certificates from the path `/etc/ssl/certs/cert.pem`. The path
+is defined by the kubernetes mount point, however the `objectName` sets the 
+filename. Make sure you set the correct object names for the deployment.
+
+https://developer.hashicorp.com/vault/docs/platform/k8s/csi
+
+<Task id="csi_pki">
+Create the `SecretProviderClass` `vault-pki-creds`.
+</Task>
+
+Did you manage to do that? If not the solution is below.
+
+<p>
+<details>
+  <summary style={{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution</summary>
+
+```yaml
+apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
+kind: SecretProviderClass
+metadata:
+  name: vault-pki-creds
+spec:
+  provider: vault
+  parameters:
+    roleName: 'chat'
+    vaultAddress: 'http://vault.vault.svc:8200'
+    objects: |
+      - objectName: "cert.pem"
+        secretPath: "pki/issue/chat"
+        method: "PUT"
+        secretKey: "certificate"
+        secretArgs:
+          common_name: chat.local.jmpd.in
+      - objectName: "key.pem"
+        secretPath: "pki/issue/chat"
+        method: "PUT"
+        secretKey: "private_key"
+        secretArgs:
+          common_name: chat.local.jmpd.in
+```
+
+</details>
+</p>
+
+With both the PKI and the Database secrets created, Let's deploy the application.

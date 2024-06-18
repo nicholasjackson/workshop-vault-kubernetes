@@ -1,0 +1,123 @@
+# Configuring Database Credentials
+
+When using the CSI integration you must have both the Vault Controller deployed to your
+Kubernetes cluster with the CSI driver enabled. And the CSI driver itself installed to the cluster.
+Both of these tasks have been configured for you and will not be covered in this section.
+What you will learn is how to define secrets using the CSI integration.
+
+CSI is a predominately a storage interface standard for kubernetes, however it also
+has the capability to integrate with secrets. To use CSI with secrets you create
+a `SecretProviderClass` resource as show below.
+
+```yaml
+apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
+kind: SecretProviderClass
+metadata:
+  name: vault-db-creds
+```
+
+The spec allows provider plugins so handle the secret integration, for example
+if you wanted to define a secret for the `database/creds/writer` secret in Vault
+you could create the following spec that defines the address of Vault and the list of
+objects that map a Vault parameter for a secret to a CSI secret parameter.
+
+```yaml
+spec:
+  provider: vault
+  parameters:
+    roleName: 'chat'
+    vaultAddress: 'http://vault.vault.svc:8200'
+    objects: |
+      - objectName: "dbUsername"
+        secretPath: "database/creds/writer"
+        secretKey: "username"
+      - objectName: "dbPassword"
+        secretPath: "database/creds/writer"
+        secretKey: "password"
+```
+
+This could then be mounted to a volume using the following convention inside your
+deployment file.
+
+```yaml
+volumes:
+  - name: vault-db-creds
+    csi:
+      driver: 'secrets-store.csi.k8s.io'
+      readOnly: true
+      volumeAttributes:
+        secretProviderClass: 'vault-db-creds'
+```
+
+Or alternately you can write the secert to a kubernetes secret, by specifying the
+optional `secretObjects` section.
+
+```yaml
+secretObjects:
+  - secretName: vault-db-creds-secret
+    type: Opaque
+    data:
+      - objectName: dbUsername # References dbUsername below
+        key: username # Key within k8s secret for this value
+      - objectName: dbPassword
+        key: password
+```
+
+<Task id="csi_database">
+Create a `SecretProviderClass` called `vault-db-creds` resource that syncs the 
+Vault secret `database/creds/writer` to the Kubernetes secret `vault-db-creds-secret`
+</Task>
+
+Did you manage to do that? If not the solution is below.
+
+<p>
+<details>
+  <summary style={{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution</summary>
+
+```yaml
+apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
+kind: SecretProviderClass
+metadata:
+  name: vault-db-creds
+spec:
+  provider: vault
+  parameters:
+    roleName: 'chat'
+    vaultAddress: 'http://vault.vault.svc:8200'
+    objects: |
+      - objectName: "dbUsername"
+        secretPath: "database/creds/writer"
+        secretKey: "username"
+      - objectName: "dbPassword"
+        secretPath: "database/creds/writer"
+        secretKey: "password"
+  secretObjects:
+    - secretName: vault-db-creds-secret
+      type: Opaque
+      data:
+        - objectName: dbUsername # References dbUsername below
+          key: username # Key within k8s secret for this value
+        - objectName: dbPassword
+          key: password
+```
+
+</details>
+</p>
+
+**Note**: When you create a `SecretProviderClass` the secret syncing is lazy,
+no action is taken until you mount the secret inside a deployment. This is done
+by adding a volume to your deployment that has the correct `csi` configurtation.
+
+If you look at the file `chat-csi.yaml` you will see the following volume definition.
+
+```yaml
+volumes:
+  - name: vault-db-creds
+    csi:
+      driver: 'secrets-store.csi.k8s.io'
+      readOnly: true
+      volumeAttributes:
+        secretProviderClass: 'vault-db-creds'
+```
+
+Now let's take a look at how you can use PKI secrets.

@@ -38,6 +38,7 @@ resource "book" "spring_vault" {
     resource.chapter.running_on_k8s,
     resource.chapter.vault_operator,
     resource.chapter.vault_controller,
+    resource.chapter.vault_csi,
   ]
 }
 

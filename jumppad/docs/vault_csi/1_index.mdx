@@ -1,0 +1,16 @@
+# Vault CSI Integration
+
+The Vault CSI secrets integration uses the CSI pattern to enable secrets to be 
+synced from Vault to either a file that can be mounted as a volume or a Kubernetes
+secret.
+
+This is configured by creating `SecretProviderClass` resources that are configured
+to sync Vault secrets to Kubernetes secrets referenced by a deployment or a volume
+that is referenced by the deployment. 
+
+```yaml
+apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
+kind: SecretProviderClass
+```
+
+Let's jump straight in and create a secret for the database credentials.

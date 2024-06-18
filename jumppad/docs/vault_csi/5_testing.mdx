@@ -5,11 +5,11 @@ Let's now open the application UI in the browser and test the application.
 If you open the following URL in a new browser window you should see a warning
 page that the connection is not secure.
 
-{{controller_url}}
+{{csi_url}}
 
 ![](/assets/not_private.png)
 
-This is beacasue the certificate that we have issued is not trusted by the browser
+This is beacause the certificate that we have issued is not trusted by the browser
 as it is a self signed certificate. For your real world environments you can
 distribute the CA certificate to your clients so that they trust the certificate.
 
@@ -25,11 +25,5 @@ You should now see the chat application UI.
 Try sending a message in the chat application. You should see the message appear
 in the chat window.
 
-If you go back to the `operator` deployment {{operator_url}} and refresh your 
-the browser you will see the chat messages that were just added, however, since
-transit integration is not enabled in the operator these messages should show up
-encrypted.
-
 Congratulations you have successfully deployed a secure chat application to Kubernetes
-using the Vault Controller. Next let's see how the same can be achieved using the
-Kubernetets CSI integration.
+using the Vault CSI integation. Let's do one final challenge.

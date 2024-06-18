@@ -36,11 +36,11 @@ module "vault_operator" {
 }
 
 resource "ingress" "chat_operator" {
-  port = 5000
+  port = 5001
 
   target {
     resource = resource.k8s_cluster.k3s
-    port     = 5000
+    port     = 5001
 
     config = {
       service   = "chat-operator"
@@ -50,14 +50,28 @@ resource "ingress" "chat_operator" {
 }
 
 resource "ingress" "chat_controller" {
-  port = 5001
+  port = 5002
 
   target {
     resource = resource.k8s_cluster.k3s
-    port     = 5001
+    port     = 5002
 
     config = {
       service   = "chat-controller"
+      namespace = "default"
+    }
+  }
+}
+
+resource "ingress" "chat_csi" {
+  port = 5003
+
+  target {
+    resource = resource.k8s_cluster.k3s
+    port     = 5003
+
+    config = {
+      service   = "chat-csi"
       namespace = "default"
     }
   }

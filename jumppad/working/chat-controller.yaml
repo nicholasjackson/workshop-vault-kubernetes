@@ -17,8 +17,8 @@ spec:
         vault.hashicorp.com/agent-cache-enable: "true"
         vault.hashicorp.com/agent-cache-use-auto-auth-token : "force"
         vault.hashicorp.com/role: "chat"
-        vault.hashicorp.com/agent-inject-secret-api: 'kv/data/chat/config'
         vault.hashicorp.com/agent-inject-secret-db: 'database/creds/writer'
+        vault.hashicorp.com/agent-inject-secret-api: 'kv/data/chat/config'
         vault.hashicorp.com/agent-inject-template-config: |
           {{- with secret "kv/data/chat/config" }}
             export api_key="{{ .Data.data.api_key }}"
@@ -47,7 +47,7 @@ spec:
         - containerPort: 5001
         env:
         - name: HTTP_PORT
-          value: "5001"
+          value: "5002"
         - name: MONGODB_SERVER
           value: "10.100.0.180"
         - name: MONGODB_PORT
@@ -60,8 +60,6 @@ spec:
           value: "/vault/secrets/key.pem"
         - name: PUBLIC_CERT_PATH
           value: "/vault/secrets/cert.pem"
-        - name: USE_VAULT
-          value: "true"
         - name: USE_VAULT
           value: "true"
         - name: VAULT_TRANSIT_KEY
@@ -78,6 +76,6 @@ spec:
     app: chat-controller
   ports:
     - protocol: TCP
-      port: 5001
-      targetPort: 5001
+      port: 5002
+      targetPort: 5002
   type: LoadBalancer

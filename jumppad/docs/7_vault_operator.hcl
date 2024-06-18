@@ -31,7 +31,7 @@ resource "chapter" "vault_operator" {
 
   page "testing" {
     content = template_file("./vault_operator/6_testing.mdx", {
-      operator_url = "https://${variable.base_url}:5000"
+      operator_url = "https://${variable.base_url}:5001"
       base_url     = variable.base_url
     })
   }

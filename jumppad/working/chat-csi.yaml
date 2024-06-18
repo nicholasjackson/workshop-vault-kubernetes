@@ -22,12 +22,22 @@ spec:
       - name: chat-csi
         image: guybarros/chat-app:latest
         ports:
-        - containerPort: 5000
+        - containerPort: 5003
         env:
+        - name: HTTP_PORT
+          value: "5003"
         - name: MONGODB_SERVER
           value: "10.100.0.180"
         - name: MONGODB_PORT
           value: "27017"
+        - name: MONGODB_AUTHDB
+          value: "admin"
+        - name: HTTP_TLS
+          value: "true"
+        - name: PRIVATE_KEY_PATH
+          value: "/etc/ssl/certs/key.pem"
+        - name: PUBLIC_CERT_PATH
+          value: "/etc/ssl/certs/cert.pem"
         - name: MONGODB_USERNAME
           valueFrom:
             secretKeyRef:
@@ -42,6 +52,9 @@ spec:
           - name: 'vault-db-creds'
             mountPath: '/mnt/secrets-store'
             readOnly: true
+          - name: 'vault-pki-creds'
+            mountPath: '/etc/ssl/certs'
+            readOnly: true
       volumes:
         - name: vault-db-creds
           csi:
@@ -49,17 +62,23 @@ spec:
             readOnly: true
             volumeAttributes:
               secretProviderClass: 'vault-db-creds'
+        - name: vault-pki-creds
+          csi:
+            driver: 'secrets-store.csi.k8s.io'
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: 'vault-pki-creds'
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: chat-controller
+  name: chat-csi
 spec:
   selector:
-    app: chat-controller
+    app: chat-csi
   ports:
     - protocol: TCP
-      port: 5000
-      targetPort: 5000
+      port: 5003
+      targetPort: 5003
   type: LoadBalancer

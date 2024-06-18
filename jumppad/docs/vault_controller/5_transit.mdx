@@ -1,0 +1,34 @@
+# Transparently Proxying Requests to Vault
+
+When we looked at the operator in the previous section we did not enable the
+Transit engines encrypt and decrypt capabiliies as we had no way to pass a
+Vault token so that the application could authenticate against the Vault API.
+
+We could of course have modified the application to authneticate using the
+Kubernetes service account, but one of the core principles of this workshop
+was to take an exising application and integrate it without needint to modify 
+any of the code.
+
+Since the Vault controller runs an instance of Vault agent as a sidecar in each  
+pod, it also has the capability to provide a local authenticated proxy to the Vault
+server.  When enabled a local listener at `http://localhost:8200` is enabled in the 
+pods networking. The token that is obtained from the authentication process is 
+automatically added to any request dramatically simplifying your applications
+API access to Vault.
+
+The configuration of this is done by adding two annotations to the pod:
+
+The first annotation `agent-cache-enable` enables the local listener and configures
+secret caching within the proxy.  The second annotation `agent-cache-use-auto-auth-token`
+configures the Vault token that the agent is using to be automatically added to
+every request that is forwarded to the Vault server.
+
+```yaml
+vault.hashicorp.com/agent-cache-enable: "true"
+vault.hashicorp.com/agent-cache-use-auto-auth-token : "force"
+```
+
+<Task id="add_annotations_5">
+Add the above annotations to the `chat-controller.yaml` file
+</Task>
+

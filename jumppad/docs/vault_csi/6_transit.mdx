@@ -1,0 +1,46 @@
+# Mixing Patterns
+
+One thing you may have noticed is that with both the `Operator` pattern and the `CSI`
+pattern you have not been able to integrate the Transit engine for encrypting and 
+decyrpting the database. This is because the `Operator` and the `CSI` driver to not 
+currently have a way to sync a Vault token or provide transparent proxy access to your
+applications.
+
+Until this feature is released you have two options to integrate Vault API access with
+your application:
+1. Manually code the authentication process to Vault
+1. Use a mixture of the `Controller` pattern and the `Operator` or `CSI` pattern.
+
+Since the Kubernetes cluster is already using the controller, Let's use the second option
+and mix the `Operator` or `CSI` pattern with the `Controller`.
+
+### Modify either the `csi` or the `operator` config to enable transit integration 
+by adding the `annotations` that inject a transparent sidecar to the pod.
+
+To enable Transit integration in the application you will also need to add the 
+following environment variables.
+
+```yaml
+- name: USE_VAULT
+  value: "true"
+- name: VAULT_TRANSIT_KEY
+  value: "chat"
+- name: VAULT_ADDR
+  value: "http://127.0.0.1:8200"
+```
+
+<p>
+<details>
+  <summary style={{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution</summary>
+
+You should have added the following annotations to your pod.
+
+```yaml
+annotations:
+  vault.hashicorp.com/agent-inject: "true"
+  vault.hashicorp.com/agent-cache-enable: "true"
+  vault.hashicorp.com/agent-cache-use-auto-auth-token : "force"
+```
+
+</details>
+</p>

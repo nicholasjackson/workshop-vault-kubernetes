@@ -16,15 +16,3 @@ vault operator unseal $(cat /vault_init.json | jq -r .unseal_keys_b64[0])
 
 # Export the root token to an environment variable so we can use it in the next steps
 export VAULT_TOKEN=$(cat /vault_init.json | jq -r .root_token)
-
-# Enable kubernetes auth
-vault auth enable kubernetes
-
-# Configure kubernetes auth
-kubectl get secret vault-k8s-auth-secret -n vault -o json | jq -r '.data."ca.crt"' | base64 -d > /k8s.crt
-kubectl get secret vault-k8s-auth-secret -n vault -o json | jq -r '.data.token' | base64 -d > /k8s.token
-
-vault write auth/kubernetes/config \
-  token_reviewer_jwt="$(cat /k8s.token)" \
-  kubernetes_host="https://kubernetes.default.svc:443" \
-  kubernetes_ca_cert=@/k8s.crt

@@ -38,3 +38,28 @@ spec:
 ```
 
 </Task>
+
+<p>
+<details>
+  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: Create a servcie account</summary>
+
+
+```shell
+tee chat-auth.yaml << EOF 
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: chat-auth
+spec:
+  method: kubernetes
+  mount: kubernetes 
+  kubernetes:
+    role: chat
+    serviceAccount: chat
+EOF
+
+kubectl apply -f chat-auth.yaml
+```
+
+</details>
+</p>

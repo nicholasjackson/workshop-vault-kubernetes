@@ -8,6 +8,10 @@ see if you can enable the Kubernetes authentication method.
 
 <a href="https://developer.hashicorp.com/vault/docs/auth/kubernetes" target="_blank">https://developer.hashicorp.com/vault/docs/auth/kubernetes</a>
 
+
+<Task id="enable_auth">
+The Kubernetes authentication method has been enabled.
+</Task>
 <p>
 <details>
   <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: command</summary>
@@ -19,10 +23,6 @@ vault auth enable kubernetes
 
 </details>
 </p>
-
-<Task id="enable_auth">
-The Kubernetes authentication method has been enabled.
-</Task>
 
 Now that the authentication method has been enabled let's configure it.
 
@@ -43,6 +43,10 @@ when configuring the Kubernetes authentication method.
 
 Why not have a go at configuring the Kubernetes authentication method.
 
+
+<Task id="configure_auth">
+Configure the Kubernetes auth method.
+</Task>
 <p>
 <details>
   <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: command</summary>
@@ -56,7 +60,3 @@ vault write auth/kubernetes/config \
 
 </details>
 </p>
-
-<Task id="configure_auth">
-Configure the Kubernetes auth method.
-</Task>

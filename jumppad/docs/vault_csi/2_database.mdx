@@ -74,7 +74,8 @@ Did you manage to do that? If not the solution is below.
 <details>
   <summary style={{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution</summary>
 
-```yaml
+```shell
+tee vault-db-creds.yaml << EOF
 apiVersion: secrets-store.csi.x-k8s.io/v1alpha1
 kind: SecretProviderClass
 metadata:
@@ -99,6 +100,9 @@ spec:
           key: username # Key within k8s secret for this value
         - objectName: dbPassword
           key: password
+EOF
+
+kubectl apply -f vault-db-creds.yaml
 ```
 
 </details>

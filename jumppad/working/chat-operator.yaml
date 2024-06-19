@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: chat-operator
+      annotations:
+       example: "annotations"
     spec:
       serviceAccountName: chat
       automountServiceAccountToken: true

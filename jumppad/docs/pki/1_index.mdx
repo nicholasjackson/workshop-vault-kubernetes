@@ -24,11 +24,11 @@ Enable the PKI secrets engine at the path `pki`.
 
 </Task>
 
-Did you manage to create the `VaultDynamicSecret` CRD? If not the solution is below.
+Did you manage to enable the `pki` secret engine? If not the solution is below.
 
 <p>
 <details>
-  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: VaultDynamicSecret</summary>
+  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: enable pki</summary>
 
 ```shell
 vault secrets enable -path=pki pki

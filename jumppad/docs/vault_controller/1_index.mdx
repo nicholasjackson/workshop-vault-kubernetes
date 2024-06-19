@@ -15,9 +15,13 @@ and to setup the authention with Vault. Like the Operator, the Controller uses t
 Service Account to authenticate with Vault.
 
 ```yaml
-annotations:
-  vault.hashicorp.com/agent-inject: "true"
-  vault.hashicorp.com/role: "chat"
+template:
+    metadata:
+      labels:
+        app: chat-controller
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "chat"
 ```
 
 <Task id="add_annotations_1">

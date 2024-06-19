@@ -48,7 +48,7 @@ resource "task" "fetch_secrets" {
         validate file exists "/usr/src/k8s.token"
       EOF
 
-      failure_message = "The transit sec"
+      failure_message = "Token and CA certificate haven't been created"
     }
 
     solve {

@@ -39,18 +39,30 @@ Did that work? If not you can find the soloution below.
 
 <p>
 <details>
+  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: writer role</summary>
+
+
+```shell
+vault write database/roles/writer \
+  db_name=chat \
+  creation_statements='{ "db": "admin", "roles": [ {"role": "readWrite", "db": "chat"}] }' \
+  default_ttl="1h" \
+  max_ttl="24h"
+```
+</details>
+</p>
+<p>
+<details>
   <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: reader role</summary>
 
 
 ```shell
 vault write database/roles/reader \
-    db_name=payments \
-    creation_statements="CREATE ROLE \"\{{name}}\" WITH LOGIN PASSWORD '\{{password}}' VALID UNTIL '\{{expiration}}'; 
-    GRANT SELECT ON payment_card TO \"\{{name}}\";" \
-    default_ttl="1h" \
-    max_ttl="24h"
+  db_name=chat \
+  creation_statements='{ "db": "admin", "roles": [ {"role": "read", "db": "chat"}] }' \
+  default_ttl="1h" \
+  max_ttl="24h"
 ```
-
 </details>
 </p>
 

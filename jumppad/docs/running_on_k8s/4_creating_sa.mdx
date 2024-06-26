@@ -19,10 +19,7 @@ Create a servcie account called `chat` in the `default` namespace that will
 be used to authenticate to Vault.
 </Task>
 
-<p>
-<details>
-  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: Create a servcie account</summary>
-
+<Solution title="Solution: creating a Kubernetes service account">
 
 ```shell
 tee chat-sa.yaml << EOF 
@@ -36,8 +33,7 @@ EOF
 kubectl apply -f chat-sa.yaml
 ```
 
-</details>
-</p>
+</Solution>
 
 Next let's see how you configure deployments for each of the different Vault Kubernetes
 integrations starting with the Vault Operator.

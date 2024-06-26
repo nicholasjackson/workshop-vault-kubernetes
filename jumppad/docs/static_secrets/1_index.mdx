@@ -12,7 +12,7 @@ Vault.
 Before you can use the secrets engine you must first mount it, you can find 
 the details on how to do this at the following location.
 
-https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2
+<Link href="https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2" target="_blank"/>
 
 **HINT** You need to enable the engine at the path `kv` and
 use version `2` of the engine, this requires specific parameters.
@@ -21,18 +21,14 @@ use version `2` of the engine, this requires specific parameters.
 Enable the kv2 engine at the path `secret`
 </Task>
 
-Did that work? If not you can find the soloution below.
+Did that work? If not you can find the solution below.
 
-<p>
-<details>
-  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: enabling secrets</summary>
-
+<Solution title="Solution">
 
 ```shell
 vault secrets enable -version=2 -path=kv kv
 ```
 
-</details>
-</p>
+</Solution>
 
 Let's now create a secret for the application to use.

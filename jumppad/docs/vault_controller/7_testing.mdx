@@ -5,9 +5,7 @@ Let's now open the application UI in the browser and test the application.
 If you open the following URL in a new browser window you should see a warning
 page that the connection is not secure.
 
-<a href="{{controller_url}}" target="_blank">{{controller_url}}</a>
-
-
+<Link href="{{controller_url}}" target="_blank" />
 
 ![](/assets/not_private.png)
 
@@ -27,8 +25,11 @@ You should now see the chat application UI.
 Try sending a message in the chat application. You should see the message appear
 in the chat window.
 
-If you go back to the `operator` deployment {{operator_url}} and refresh your 
-the browser you will see the chat messages that were just added, however, since
+If you go back to the `operator` deployment:
+
+<Link href="{{operator_url}}" target="_blank" />
+ 
+And refresh your browser you will see the chat messages that were just added, however, since
 transit integration is not enabled in the operator these messages should show up
 encrypted.
 

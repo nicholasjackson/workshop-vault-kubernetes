@@ -41,9 +41,7 @@ Using the `vault policy` command create a policy with the required access and sa
 
 Did you figure it out? If not the solution is below.
 
-<p>
-<details>
-  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: command</summary>
+<Solution title="Solution">
 
 ```bash
 vault policy write chat - <<EOF
@@ -68,8 +66,8 @@ path "pki/issue/chat" {
 }
 EOF
 ```
-</details>
-</p>
+
+</Solution>
 
 Now let's see how you link this policy to a Kubernetes service account with a 
 role.

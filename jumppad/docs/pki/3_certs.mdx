@@ -20,9 +20,7 @@ the following parameters:
 Create a role called `chat` that is valid for the domain `chat.local.jmpd.in`.
 </Task>
 
-<p>
-<details>
-  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: Create PKI Role</summary>
+<Solution title="Solution: Create PKI Role">
 
 ```shell
 vault write pki/roles/chat \
@@ -31,8 +29,7 @@ vault write pki/roles/chat \
   max_ttl=72h
 ```
 
-</details>
-</p>
+</Solution>
 
 ## Issue a Certificate
 

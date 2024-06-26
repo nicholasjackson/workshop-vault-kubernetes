@@ -39,10 +39,7 @@ spec:
 
 </Task>
 
-<p>
-<details>
-  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: Create Vault Authentication </summary>
-
+<Solution title="Solution: configure operator authentication">
 
 ```shell
 tee chat-auth.yaml << EOF 
@@ -61,5 +58,4 @@ EOF
 kubectl apply -f chat-auth.yaml
 ```
 
-</details>
-</p>
+</Solution>

@@ -23,7 +23,7 @@ spec:
         args:
           ['sh', '-c', '. /vault/secrets/config && npm start']
         ports:
-        - containerPort: 5001
+        - containerPort: 5002
         env:
         - name: HTTP_PORT
           value: "5002"

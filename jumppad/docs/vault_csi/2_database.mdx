@@ -70,9 +70,7 @@ Vault secret `database/creds/writer` to the Kubernetes secret `vault-db-creds-se
 
 Did you manage to do that? If not the solution is below.
 
-<p>
-<details>
-  <summary style={{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution</summary>
+<Solution title="Solution: SecretProviderClass">
 
 ```shell
 tee vault-db-creds.yaml << EOF
@@ -105,8 +103,7 @@ EOF
 kubectl apply -f vault-db-creds.yaml
 ```
 
-</details>
-</p>
+</Solution>
 
 **Note**: When you create a `SecretProviderClass` the secret syncing is lazy,
 no action is taken until you mount the secret inside a deployment. This is done

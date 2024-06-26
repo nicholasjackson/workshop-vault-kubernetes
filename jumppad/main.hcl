@@ -3,7 +3,7 @@ variable "docs_url" {
 }
 
 variable "base_url" {
-  default = "localhost"
+  default = docker_ip()
 }
 
 variable "install_vault" {

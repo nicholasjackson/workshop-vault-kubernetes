@@ -19,20 +19,15 @@ Enabling the PKI secrets engine is the same as you have done for the other engin
 tutorial.  
 
 <Task id="enable_pki">
-
 Enable the PKI secrets engine at the path `pki`.
-
 </Task>
 
 Did you manage to enable the `pki` secret engine? If not the solution is below.
 
-<p>
-<details>
-  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: enable pki</summary>
+<Solution title="Solution: enable pki secrets engine">
 
 ```shell
 vault secrets enable -path=pki pki
 ```
 
-</details>
-</p>
+</Solution>

@@ -1,8 +1,7 @@
-FROM ghcr.io/jumppad-labs/vscode:base-v0.4.0
+FROM ghcr.io/jumppad-labs/vscode:vscode-v0.5.2
 
 ARG TARGETARCH
 ARG VAULT_VERSION=1.15.6
-ARG HELM_VERSION=1.15.6
 
 # Install default packages
 RUN apt-get update && \

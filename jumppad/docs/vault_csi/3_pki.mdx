@@ -30,9 +30,7 @@ Create the `SecretProviderClass` `vault-pki-creds`.
 
 Did you manage to do that? If not the solution is below.
 
-<p>
-<details>
-  <summary style={{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution</summary>
+<Solution title="Solution: SecretProviderClass">
 
 ```shell
 tee vault-pki-creds.yaml << EOF
@@ -63,7 +61,6 @@ EOF
 kubectl apply -f vault-pki-creds.yaml
 ```
 
-</details>
-</p>
+</Solution>
 
 With both the PKI and the Database secrets created, Let's deploy the application.

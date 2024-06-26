@@ -47,10 +47,6 @@ resource "docs" "docs" {
     id = variable.network
   }
 
-  image {
-    name = "ghcr.io/jumppad-labs/docs:v0.4.1"
-  }
-
   content = [
     resource.book.spring_vault
   ]

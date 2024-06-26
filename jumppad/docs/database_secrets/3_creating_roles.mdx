@@ -37,10 +37,7 @@ Create the reader and writer roles for the database.
 
 Did that work? If not you can find the soloution below.
 
-<p>
-<details>
-  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: writer role</summary>
-
+<Solution title="Solution: writer role">
 
 ```shell
 vault write database/roles/writer \
@@ -49,12 +46,9 @@ vault write database/roles/writer \
   default_ttl="1h" \
   max_ttl="24h"
 ```
-</details>
-</p>
-<p>
-<details>
-  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: reader role</summary>
+</Solution>
 
+<Solution title="Solution: reader role">
 
 ```shell
 vault write database/roles/reader \
@@ -63,7 +57,7 @@ vault write database/roles/reader \
   default_ttl="1h" \
   max_ttl="24h"
 ```
-</details>
-</p>
+
+</Solution>
 
 Let's now generate some credentials and log into the database.

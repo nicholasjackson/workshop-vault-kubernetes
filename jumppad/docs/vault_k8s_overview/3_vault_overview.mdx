@@ -12,15 +12,20 @@ it is possible to find our the curl string for any command directly from the ter
 
 ```shell
 vault kv get -output-curl-string -mount="EU_GDPR_data" "orders/acct1"
+```
 
-curl -H "X-Vault-Request: true" -H "X-Vault-Namespace: admin/" -H "X-Vault-Token: $(vault print token)" https://do-not-delete-ever-v2-public-vault-cf6a1d76.5773df81.z1.hashicorp.cloud:8200/v1/EU_GDPR_data/data/orders/acct1
+```shell
+curl -H "X-Vault-Request: true" \
+     -H "X-Vault-Namespace: admin/" \
+     -H "X-Vault-Token: $(vault print token)" \
+     https://do-not-delete-ever-v2-public-vault-cf6a1d76.5773df81.z1.hashicorp.cloud:8200/v1/EU_GDPR_data/data/orders/acct1
 ```
 
 ## Namespaces
 
 Namespaces are Vault's multi tenancy solution. while every namespace shares the same TCP listener they are expected to have their own AuthN/AuthZ processes and be used for different workspaces. to undestand more about namespace modeling, Vault's Validated design guide is a great reference: 
 
-https://developer.hashicorp.com/validated-designs/vault-operating-guides-adoption/introduction
+<Link href="https://developer.hashicorp.com/validated-designs/vault-operating-guides-adoption/introduction" target="_blank"/>
 
 ## Authentication
 
@@ -53,4 +58,4 @@ When are secrets needed? when they'll be used! with Dynamic secrets, instead of 
 
 Encryption as a service standarises cryptography usage for different clients by centralizing key management and providing API access for Encryption,Decryption,HMAC,Sign, Verify. Vault Enterprise also provides FPE, TDE, KMIP and key destribution secret engines. this greatly enhance security by not needed to distribute encryption keys and separating key management from key usage.
 
-now lets look at using these secret engines.
+Now, lets look at using these secret engines.

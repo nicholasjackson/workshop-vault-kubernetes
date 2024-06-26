@@ -6,23 +6,20 @@ Enabling the Kubernetes authentication method is a very similar process as you h
 completed in previous exercises. Why not take a look at the documentation and 
 see if you can enable the Kubernetes authentication method.
 
-<a href="https://developer.hashicorp.com/vault/docs/auth/kubernetes" target="_blank">https://developer.hashicorp.com/vault/docs/auth/kubernetes</a>
-
+<Link href="https://developer.hashicorp.com/vault/docs/auth/kubernetes" target="_blank" />
 
 <Task id="enable_auth">
 The Kubernetes authentication method has been enabled.
 </Task>
-<p>
-<details>
-  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: command</summary>
+
+<Solution title="Solution: enable kubernetes auth">
 
 ```bash
 # Enable kubernetes auth
 vault auth enable kubernetes
 ```
 
-</details>
-</p>
+</Solution>
 
 Now that the authentication method has been enabled let's configure it.
 
@@ -47,9 +44,10 @@ Why not have a go at configuring the Kubernetes authentication method.
 <Task id="configure_auth">
 Configure the Kubernetes auth method.
 </Task>
-<p>
-<details>
-  <summary style=\{{ fontSize: '18px', color: 'rgb(84, 128, 178)', fontWeight: 'medium' }} >Solution: command</summary>
+
+Did you mange that? If not you can find the solution below.
+
+<Solution title="Solution: configure kubernetes auth">
 
 ```bash
 vault write auth/kubernetes/config \
@@ -58,5 +56,4 @@ vault write auth/kubernetes/config \
   kubernetes_ca_cert=@/usr/src/k8s.crt
 ```
 
-</details>
-</p>
+</Solution>

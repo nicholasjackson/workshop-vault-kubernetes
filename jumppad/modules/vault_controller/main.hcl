@@ -15,7 +15,7 @@ variable "vault_namespace" {
 }
 
 resource "helm" "csi_driver" {
-  cluster    = variable.k8s
+  cluster = variable.k8s
 
   repository {
     name = "secrets-store-csi-driver"
@@ -23,6 +23,8 @@ resource "helm" "csi_driver" {
   }
 
   chart   = "secrets-store-csi-driver/secrets-store-csi-driver"
+  retry   = 2
+  timeout = "200s"
 
   namespace = "kube-system"
 
@@ -32,7 +34,7 @@ resource "helm" "csi_driver" {
 # Configure the Vault Kubernetes service account
 resource "k8s_config" "vault_auth" {
   depends_on = ["resource.helm.csi_driver"]
-  cluster = variable.k8s
+  cluster    = variable.k8s
 
   paths = [
     "./config/vault_k8s_service_account.yaml",

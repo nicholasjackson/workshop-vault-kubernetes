@@ -52,7 +52,7 @@ resource "container" "vscode" {
   }
 
   image {
-    name = "nicholasjackson/kubernetes-vault-vscode:v0.0.2"
+    name = "nicholasjackson/kubernetes-vault-vscode:v0.0.3"
   }
 
   volume {

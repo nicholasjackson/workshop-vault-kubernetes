@@ -31,7 +31,7 @@ resource "task" "enable_secrets" {
         vault read sys/mounts | grep kv | grep version:2
       EOF 
 
-      failure_message = "Run the previous command to enable the database engine"
+      failure_message = "Run the previous command to enable the kv secrets engine"
     }
 
     solve {

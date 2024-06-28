@@ -36,7 +36,7 @@ resource "task" "enable_secrets" {
 
     solve {
       script = <<-EOF
-        vault secrets enable -version=2 kv --path=kv
+        vault secrets enable -version=2 kv
       EOF
 
       timeout = 60
